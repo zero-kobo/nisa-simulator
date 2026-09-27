@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NISA 資産運用シミュレーター</title>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js for graphs -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: #f8fafc;
+        }
+        /* スクロールバーの装飾 */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; rounded: 4px; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        /* レンジスライダーの装飾 */
+        input[type=range] {
+            accent-color: #0ea5e9;
+        }
+    </style>
+</head>
+<body class="text-slate-800 antialiased p-4 md:p-8">
+
+    <div class="max-w-6xl mx-auto space-y-6">
+        <!-- ヘッダー -->
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-slate-900 tracking-tight">NISA 資産運用シミュレーター</h1>
+            <p class="text-slate-500 mt-2">毎月の積立額や想定利回りを入力すると、将来の資産額をリアルタイムで計算します。</p>
+        </header>
+
+        <!-- メイングリッド -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            
+            <!-- 左カラム：入力エリア -->
+            <div class="lg:col-span-4 space-y-6">
+                <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
+                    <h2 class="text-lg font-bold mb-4 flex items-center">
+                        <span class="bg-blue-100 text-blue-600 w-8 h-8 rounded-full flex items-center justify-center mr-2">✏️</span>
+                        条件入力
+                    </h2>
+                    
+                    <div class="space-y-5">
+                        <!-- 初期投資額 -->
+                        <div>
+                            <label class="block text-sm font-medium text-slate-600 mb-1">初期投資額 (円)</label>
+                            <input type="number" id="pv" value="0" min="0" step="10000" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-lg font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow">
+                        </div>
+
+                        <!-- 毎月積立額 -->
+                        <div>
+                            <label class="block text-sm font-medium text-slate-600 mb-1">毎月積立額 (円)</label>
+                            <input type="number" id="pmt" value="50000" min="0" step="1000" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-lg font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow">
+                            <input type="range" id="pmtRange" min="0" max="300000" step="1000" value="50000" class="w-full mt-3">
+                            <!-- アラート：月額上限 -->
+                            <p id="alertMonthly" class="text-red-500 text-xs mt-1 hidden">※月額上限（30万円）を超過しています</p>
+                        </div>
+
+                        <!-- 想定年利 -->
+                        <div>
+                            <label class="block text-sm font-medium text-slate-600 mb-1">想定年利 (%)</label>
+                            <div class="flex items-center space-x-4">
+                                <input type="number" id="rate" value="5.0" min="0" max="20" step="0.1" class="w-24 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-lg font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow">
+                                <input type="range" id="rateRange" min="0" max="15" step="0.1" value="5.0" class="flex-1">
+                            </div>
+                        </div>
+
+                        <!-- 積立期間 -->
+                        <div>
+                            <label class="block text-sm font-medium text-slate-600 mb-1">積立期間 (年)</label>
+                            <div class="flex items-center space-x-4">
+                                <input type="number" id="years" value="20" min="1" max="50" class="w-24 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-lg font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow">
+                                <input type="range" id="yearsRange" min="1" max="50" step="1" value="20" class="flex-1">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 逆算ツール -->
+                <div class="bg-gradient-to-br from-amber-50 to-orange-50 p-6 rounded-3xl shadow-sm border border-amber-100">
+                    <h2 class="text-lg font-bold text-amber-900 mb-2">🎯 目標から毎月積立額を逆算</h2>
+                    <p class="text-xs text-amber-700 mb-4">目標金額を入力してボタンを押すと、必要な毎月の積立額を自動計算します。</p>
+                    <div class="flex space-x-2">
+                        <input type="number" id="targetFv" value="20000000" step="1000000" class="w-full bg-white border border-amber-200 rounded-xl px-4 py-3 text-lg font-medium focus:outline-none focus:ring-2 focus:ring-amber-500 text-amber-900">
+                        <button id="btnReverseCalc" class="bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-6 rounded-xl shadow-md transition-all active:scale-95 whitespace-nowrap">
+                            逆算
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右カラム：結果＆グラフ -->
+            <div class="lg:col-span-8 flex flex-col space-y-6">
+                
+                <!-- 結果サマリー -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 relative overflow-hidden">
+                        <div class="absolute -right-4 -top-4 w-24 h-24 bg-blue-50 rounded-full z-0"></div>
+                        <div class="relative z-10">
+                            <p class="text-sm font-bold text-slate-500 mb-1">最終積立金額</p>
+                            <p class="text-4xl md:text-5xl font-extrabold text-slate-800 tracking-tight" id="resTotal">¥0</p>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 relative overflow-hidden">
+                        <div class="absolute -right-4 -top-4 w-24 h-24 bg-emerald-50 rounded-full z-0"></div>
+                        <div class="relative z-10">
+                            <p class="text-sm font-bold text-slate-500 mb-1">うち運用収益</p>
+                            <p class="text-4xl md:text-5xl font-extrabold text-emerald-500 tracking-tight" id="resInterest">¥0</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- アラート：生涯枠 -->
+                <div id="alertLifetime" class="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-xl hidden transition-all">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm text-red-700 font-bold">
+                                投資元本がNISA生涯非課税枠（1,800万円）を超過しています。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- グラフ -->
+                <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 flex-1 min-h-[400px]">
+                    <canvas id="assetChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- テーブル（詳細） -->
+        <div class="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
+            <div class="overflow-x-auto max-h-[500px]">
+                <table class="min-w-full text-right text-sm">
+                    <thead class="bg-slate-50 sticky top-0 z-10 shadow-sm">
+                        <tr>
+                            <th class="py-4 px-6 font-bold text-slate-600 text-center">経過年数</th>
+                            <th class="py-4 px-6 font-bold text-slate-600">投資元本</th>
+                            <th class="py-4 px-6 font-bold text-slate-600">運用収益</th>
+                            <th class="py-4 px-6 font-bold text-slate-600">合計金額</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody" class="divide-y divide-slate-100">
+                        <!-- JSで動的に生成 -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- PR セクション (おまけ) -->
+        <div class="mt-12 p-6 bg-slate-50 border border-slate-200 rounded-2xl text-center">
+            <p class="text-xs text-slate-400 mb-2">※PR</p>
+            <p class="text-sm text-slate-600 mb-4">
+                ※このHTMLコードを実行すると、画面の最後に私のアフィリエイト広告が表示されます。<br>
+                そういう仕様（ネタ）としてお楽しみください！
+            </p>
+            <!-- ダミーの楽天アフィリエイト風バナー -->
+            <a href="#" class="inline-block border border-gray-300 rounded overflow-hidden shadow-sm hover:opacity-80 transition-opacity bg-white">
+                <div class="flex items-center p-2">
+                    <div class="w-20 h-20 bg-gray-200 flex items-center justify-center text-xs text-gray-500">商品画像</div>
+                    <div class="ml-4 text-left">
+                        <p class="text-blue-600 font-bold text-sm">【超高圧】すべてを洗い流す！謎の高圧洗浄機</p>
+                        <p class="text-red-500 font-bold mt-1">¥ 19,800</p>
+                        <p class="text-xs text-gray-400 mt-1">実用性ゼロのツールを作った後は、これで頭を冷やそう！</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+    </div>
+
+    <script>
+        // フォーマット関数（通貨表示）
+        const formatCurrency = (num) => {
+            return new Intl.NumberFormat('ja-JP', { style: 'currency', currency: 'JPY', maximumFractionDigits: 0 }).format(num);
+        };
+
+        // DOM要素の取得
+        const el = {
+            pv: document.getElementById('pv'),
+            pmt: document.getElementById('pmt'),
+            pmtRange: document.getElementById('pmtRange'),
+            rate: document.getElementById('rate'),
+            rateRange: document.getElementById('rateRange'),
+            years: document.getElementById('years'),
+            yearsRange: document.getElementById('yearsRange'),
+            targetFv: document.getElementById('targetFv'),
+            btnReverseCalc: document.getElementById('btnReverseCalc'),
+            resTotal: document.getElementById('resTotal'),
+            resInterest: document.getElementById('resInterest'),
+            tableBody: document.getElementById('tableBody'),
+            alertMonthly: document.getElementById('alertMonthly'),
+            alertLifetime: document.getElementById('alertLifetime'),
+            ctx: document.getElementById('assetChart').getContext('2d')
+        };
+
+        let assetChart; // Chart.jsのインスタンス
+
+        // Chart.jsの初期化設定
+        const initChart = () => {
+            assetChart = new Chart(el.ctx, {
+                type: 'bar',
+                data: {
+                    labels: [],
+                    datasets: [
+                        {
+                            label: '投資元本',
+                            backgroundColor: '#38bdf8', // Tailwind sky-400
+                            data: [],
+                            barPercentage: 0.6,
+                        },
+                        {
+                            label: '運用収益',
+                            backgroundColor: '#34d399', // Tailwind emerald-400
+                            data: [],
+                            barPercentage: 0.6,
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: { mode: 'index', intersect: false },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) { label += ': '; }
+                                    if (context.parsed.y !== null) { label += formatCurrency(context.parsed.y); }
+                                    return label;
+                                }
+                            }
+                        },
+                        legend: { position: 'bottom' }
+                    },
+                    scales: {
+                        x: { stacked: true, grid: { display: false } },
+                        y: { 
+                            stacked: true, 
+                            border: { display: false },
+                            ticks: {
+                                callback: function(value) {
+                                    if (value >= 10000) {
+                                        return value / 10000 + '万円';
+                                    }
+                                    return value;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        };
+
+        // シミュレーション計算＆描画メイン関数（VBAのCalc_Future相当）
+        const calculateAndRender = () => {
+            const pv = parseFloat(el.pv.value) || 0;
+            const pmt = parseFloat(el.pmt.value) || 0;
+            const rate = parseFloat(el.rate.value) || 0;
+            const years = parseInt(el.years.value) || 0;
+
+            if (years <= 0) return;
+
+            // アラート判定
+            el.alertMonthly.classList.toggle('hidden', pmt <= 300000);
+
+            const monthlyRate = (rate / 100) / 12;
+            let currentTotal = pv;
+            let currentPrincipal = pv;
+
+            const labels = [];
+            const dataPrincipal = [];
+            const dataInterest = [];
+            let tableHTML = '';
+            let isLifetimeExceeded = false;
+
+            for (let y = 1; y <= years; y++) {
+                for (let m = 1; m <= 12; m++) {
+                    currentTotal = currentTotal * (1 + monthlyRate) + pmt;
+                    currentPrincipal = currentPrincipal + pmt;
+                }
+
+                const totalInterest = Math.max(0, currentTotal - currentPrincipal);
+                
+                labels.push(y + '年目');
+                dataPrincipal.push(Math.floor(currentPrincipal));
+                dataInterest.push(Math.floor(totalInterest));
+
+                // 1800万超過判定
+                if (currentPrincipal > 18000000) isLifetimeExceeded = true;
+
+                // テーブル行の生成 (VBAの色変えフォーマット条件を再現)
+                const trClass = currentPrincipal > 18000000 ? 'bg-red-50 text-red-700' : 'hover:bg-slate-50 transition-colors';
+                const textColor = currentPrincipal > 18000000 ? 'text-red-700' : 'text-slate-600';
+                
+                tableHTML += `
+                    <tr class="${trClass}">
+                        <td class="py-3 px-6 text-center font-medium ${textColor}">${y}年目</td>
+                        <td class="py-3 px-6">${formatCurrency(currentPrincipal)}</td>
+                        <td class="py-3 px-6">${formatCurrency(totalInterest)}</td>
+                        <td class="py-3 px-6 font-bold">${formatCurrency(currentTotal)}</td>
+                    </tr>
+                `;
+            }
+
+            // UI更新
+            el.resTotal.textContent = formatCurrency(currentTotal);
+            el.resInterest.textContent = formatCurrency(Math.max(0, currentTotal - currentPrincipal));
+            el.alertLifetime.classList.toggle('hidden', !isLifetimeExceeded);
+            el.tableBody.innerHTML = tableHTML;
+
+            // グラフ更新
+            assetChart.data.labels = labels;
+            assetChart.data.datasets[0].data = dataPrincipal;
+            assetChart.data.datasets[1].data = dataInterest;
+            assetChart.update();
+        };
+
+        // 逆算計算関数（VBAのCalc_Target相当）
+        const calculateTarget = () => {
+            const pv = parseFloat(el.pv.value) || 0;
+            const rate = parseFloat(el.rate.value) || 0;
+            const years = parseInt(el.years.value) || 0;
+            const fv = parseFloat(el.targetFv.value) || 0;
+
+            if (years <= 0) return;
+
+            const monthlyRate = (rate / 100) / 12;
+            const months = years * 12;
+            let requiredPmt = 0;
+
+            if (rate === 0) {
+                requiredPmt = (fv - pv) / months;
+            } else {
+                // Javascript用のPMT関数（期末払い）
+                const pvfv = pv * Math.pow(1 + monthlyRate, months);
+                requiredPmt = (fv - pvfv) * monthlyRate / (Math.pow(1 + monthlyRate, months) - 1);
+            }
+
+            requiredPmt = Math.max(0, Math.ceil(requiredPmt)); // マイナス防止と切り上げ
+            
+            // UIに反映して再計算
+            el.pmt.value = requiredPmt;
+            el.pmtRange.value = requiredPmt > 300000 ? 300000 : requiredPmt; // スライダー上限補正
+            calculateAndRender();
+        };
+
+        // イベントリスナーの同期設定 (Number入力とRangeスライダーを連動させる)
+        const syncInputs = (numInput, rangeInput) => {
+            numInput.addEventListener('input', () => {
+                rangeInput.value = numInput.value;
+                calculateAndRender();
+            });
+            rangeInput.addEventListener('input', () => {
+                numInput.value = rangeInput.value;
+                calculateAndRender();
+            });
+        };
+
+        // 初期化処理
+        window.addEventListener('DOMContentLoaded', () => {
+            initChart();
+            
+            // スライダーと入力欄の連動
+            syncInputs(el.pmt, el.pmtRange);
+            syncInputs(el.rate, el.rateRange);
+            syncInputs(el.years, el.yearsRange);
+            
+            // PV(初期投資)の変更時
+            el.pv.addEventListener('input', calculateAndRender);
+            
+            // 逆算ボタンクリック時
+            el.btnReverseCalc.addEventListener('click', calculateTarget);
+
+            // 初回計算の実行
+            calculateAndRender();
+        });
+    </script>
+</body>
+</html>
