@@ -40,18 +40,19 @@ input[type=range]{accent-color:#0ea5e9}
 <div>
 <label class="block text-sm font-medium text-slate-600 mb-1" for="pv">初期投資額 (円)</label>
 <input type="number" id="pv" value="0" min="0" step="10000" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-lg font-medium focus:outline-none focus:ring-2 focus:ring-blue-500">
+<p id="alertYear1" class="text-amber-600 text-xs mt-1 hidden">※1年目は初期投資と積立の合計が年間枠（360万円）を超えるため、超えた分は課税口座で運用した前提で計算します</p>
 </div>
 <div>
 <label class="block text-sm font-medium text-slate-600 mb-1" for="pmt">毎月積立額 (円)</label>
 <input type="number" id="pmt" value="50000" min="0" step="1000" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-lg font-medium focus:outline-none focus:ring-2 focus:ring-blue-500">
-<input type="range" id="pmtRange" min="0" max="300000" step="1000" value="50000" class="w-full mt-3">
-<p id="alertMonthly" class="text-red-500 text-xs mt-1 hidden">※月額上限（30万円）を超過しています</p>
+<input type="range" id="pmtRange" min="0" max="300000" step="1000" value="50000" aria-label="毎月積立額" class="w-full mt-3">
+<p id="alertMonthly" class="text-amber-600 text-xs mt-1 hidden">※月30万円（年間枠360万円）を超えた分は課税口座で運用した前提で計算します</p>
 </div>
 <div>
 <label class="block text-sm font-medium text-slate-600 mb-1" for="rate">想定年利 (%) ※標準パターン</label>
 <div class="flex items-center space-x-4">
 <input type="number" id="rate" value="5.0" min="0" max="20" step="0.1" class="w-24 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-lg font-medium focus:outline-none focus:ring-2 focus:ring-blue-500">
-<input type="range" id="rateRange" min="0" max="15" step="0.1" value="5.0" class="flex-1">
+<input type="range" id="rateRange" min="0" max="15" step="0.1" value="5.0" aria-label="想定年利" class="flex-1">
 </div>
 <p class="text-xs text-slate-400 mt-1">悲観は−2%、楽観は+2%で自動計算します。</p>
 </div>
@@ -59,7 +60,7 @@ input[type=range]{accent-color:#0ea5e9}
 <label class="block text-sm font-medium text-slate-600 mb-1" for="years">積立期間 (年)</label>
 <div class="flex items-center space-x-4">
 <input type="number" id="years" value="20" min="1" max="50" class="w-24 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-lg font-medium focus:outline-none focus:ring-2 focus:ring-blue-500">
-<input type="range" id="yearsRange" min="1" max="50" step="1" value="20" class="flex-1">
+<input type="range" id="yearsRange" min="1" max="50" step="1" value="20" aria-label="積立期間" class="flex-1">
 </div>
 </div>
 </div>
@@ -67,11 +68,12 @@ input[type=range]{accent-color:#0ea5e9}
 
 <div class="bg-amber-50 p-6 rounded-3xl shadow-sm border border-amber-100">
 <h2 class="text-lg font-bold text-amber-900 mb-2">目標から毎月積立額を逆算</h2>
-<p class="text-xs text-amber-700 mb-4">目標金額を入れて「逆算」を押すと、標準パターンで必要な毎月の積立額を自動入力します。</p>
+<p class="text-xs text-amber-700 mb-4">目標金額（税引き前の資産額）を入れて「逆算」を押すと、標準パターンで必要な毎月の積立額を自動入力します。</p>
 <div class="flex space-x-2">
 <input type="number" id="targetFv" value="20000000" step="1000000" aria-label="目標金額" class="w-full bg-white border border-amber-200 rounded-xl px-4 py-3 text-lg font-medium focus:outline-none focus:ring-2 focus:ring-amber-500 text-amber-900">
 <button id="btnReverse" class="bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-6 rounded-xl shadow-md whitespace-nowrap">逆算</button>
 </div>
+<p id="reverseMsg" class="text-xs text-red-600 mt-3 hidden"></p>
 </div>
 </div>
 
@@ -94,17 +96,18 @@ input[type=range]{accent-color:#0ea5e9}
 </div>
 
 <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
-<h2 class="text-base font-bold mb-3">課税口座と比べると（標準パターン）</h2>
+<h2 class="text-base font-bold mb-3">課税口座と比べると（標準パターン・税引き後）</h2>
 <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3 sm:text-center">
-<div class="flex sm:block justify-between items-center"><p class="text-xs text-slate-500">NISAの最終額</p><p class="text-base md:text-lg lg:text-xl whitespace-nowrap font-bold" id="nisaTotal">¥0</p></div>
-<div class="flex sm:block justify-between items-center"><p class="text-xs text-slate-500">課税口座の手取り</p><p class="text-base md:text-lg lg:text-xl whitespace-nowrap font-bold text-slate-600" id="taxTotal">¥0</p></div>
+<div class="flex sm:block justify-between items-center"><p class="text-xs text-slate-500">NISAを使った場合の手取り</p><p class="text-base md:text-lg lg:text-xl whitespace-nowrap font-bold" id="nisaTotal">¥0</p></div>
+<div class="flex sm:block justify-between items-center"><p class="text-xs text-slate-500">課税口座だけの手取り</p><p class="text-base md:text-lg lg:text-xl whitespace-nowrap font-bold text-slate-600" id="taxTotal">¥0</p></div>
 <div class="flex sm:block justify-between items-center"><p class="text-xs text-slate-500">NISAで得する額</p><p class="text-base md:text-lg lg:text-xl whitespace-nowrap font-extrabold text-emerald-600" id="taxSaved">¥0</p></div>
 </div>
-<p class="text-xs text-slate-400 mt-3">運用益に20.315%がかかる前提で、最後に一括売却した場合の試算です。</p>
+<p class="text-xs text-slate-400 mt-3">運用益に20.315%がかかる前提で、最後に一括売却した場合の試算です。<span id="overNote"></span></p>
 </div>
 
-<div id="alertLifetime" class="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-xl hidden">
-<p class="text-sm text-red-700 font-bold">投資元本がNISA生涯非課税枠（1,800万円）を超えています。</p>
+<div id="alertLifetime" class="bg-amber-50 border-l-4 border-amber-500 p-4 rounded-r-xl hidden">
+<p class="text-sm text-amber-800 font-bold" id="alertLifetimeText"></p>
+<p class="text-xs text-amber-700 mt-1">それ以降の積立は課税口座で運用した前提で計算しています。表の黄色の行が該当します。</p>
 </div>
 
 <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 h-[380px]">
@@ -138,14 +141,23 @@ input[type=range]{accent-color:#0ea5e9}
 </div>
 </div>
 
+<!-- note記事へのリンク -->
+<div class="bg-white p-6 rounded-3xl border border-slate-100 max-w-3xl">
+<h2 class="text-base font-bold text-slate-800 mb-2">このツールについて</h2>
+<p class="text-sm text-slate-600 leading-relaxed mb-4">作った経緯や更新内容はnoteに書いています。バグや改善案があれば、記事のコメントで気軽に教えてください。いただいた内容は次の更新で参考にします。</p>
+<!-- note記事のURL（次に更新記事を書いたらここを張り替え） -->
+<a href="https://note.com/zero_kobo/n/na9edd5565d3c" target="_blank" rel="noopener" class="inline-block bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3 px-6 rounded-xl">noteの記事を読む</a>
+</div>
+
 <section class="bg-white p-6 rounded-3xl border border-slate-100 text-sm leading-relaxed text-slate-600 space-y-4 max-w-3xl">
 <h2 class="text-lg font-bold text-slate-800">使い方と前提</h2>
 <p>毎月の積立額、想定年利、期間を入れると、積立を続けた場合の資産額を計算します。月ごとに利回りを加える複利計算で、積立は月末に入る前提です。</p>
+<p>年間投資枠（360万円）や生涯の非課税枠（1,800万円）を超えた分は、課税口座で運用した前提で計算します。</p>
 <h3 class="font-bold text-slate-800">新NISAの非課税枠は？</h3>
 <p>年間の投資枠は、つみたて投資枠が120万円、成長投資枠が240万円で、合計360万円（月30万円）です。生涯の非課税保有限度額は1,800万円です。</p>
 <h3 class="font-bold text-slate-800">利回りは何％にすればいい？</h3>
 <p>将来の利回りは誰にも分かりません。1つの数字で決めず、悲観・標準・楽観の幅で見るのがおすすめです。</p>
-<p class="text-xs text-slate-400">本ツールは一定の利回りが続くと仮定した試算で、将来の運用成果を保証しません。手数料や制度の変更は考慮していません。投資の判断はご自身でお願いします。</p>
+<p class="text-xs text-slate-400">本ツールは2026年10月時点の制度（年間投資枠360万円・生涯非課税保有限度額1,800万円・税率20.315%）をもとに、一定の利回りが続くと仮定した試算です。将来の運用成果を保証するものではありません。手数料、制度の変更、売却による非課税枠の再利用は考慮していません。投資の判断はご自身でお願いします。本ページには広告（アフィリエイトリンク）を含みます。</p>
 </section>
 
 </div>
@@ -154,51 +166,89 @@ input[type=range]{accent-color:#0ea5e9}
 const $ = id => document.getElementById(id);
 const yen = n => new Intl.NumberFormat('ja-JP',{style:'currency',currency:'JPY',maximumFractionDigits:0}).format(n);
 const man = n => Math.round(n/10000).toLocaleString('ja-JP') + '万円';
-const TAX = 0.20315, SPREAD = 2, LIMIT = 18000000;
+const TAX = 0.20315, SPREAD = 2, LIMIT = 18000000, ANNUAL = 3600000, MONTHLY = 300000;
+const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
 let chart, last = {};
 
+// NISA枠（年間360万円・生涯1,800万円）を超えた分は課税口座で運用する前提
 const run = (pv, pmt, rate, years) => {
-  const r = rate/100/12; let t = pv, p = pv; const T = [], P = [];
+  const r = rate/100/12;
+  let nisa = 0, nisaP = 0, tx = 0, txP = 0, used = 0, fullYear = 0;
+  const T = [], P = [];
+  const add = amt => {
+    const room = Math.max(0, Math.min(ANNUAL - used, LIMIT - nisaP));
+    const toN = Math.min(amt, room);
+    nisa += toN; nisaP += toN; used += toN;
+    tx += amt - toN; txP += amt - toN;
+  };
+  add(pv); // 初期投資は1年目の枠を使う
   for (let y = 1; y <= years; y++) {
-    for (let m = 0; m < 12; m++) { t = t*(1+r) + pmt; p += pmt; }
-    T.push(t); P.push(p);
+    if (y > 1) used = 0;
+    for (let m = 0; m < 12; m++) { nisa *= 1+r; tx *= 1+r; add(pmt); }
+    if (!fullYear && nisaP >= LIMIT) fullYear = y;
+    T.push(nisa+tx); P.push(nisaP+txP);
   }
-  return {T, P};
+  return {T, P, tx, txP, fullYear};
 };
 
+const read = () => ({
+  pv: Math.max(0, parseFloat($('pv').value)||0),
+  pmt: Math.max(0, parseFloat($('pmt').value)||0),
+  rate: clamp(parseFloat($('rate').value)||0, 0, 20),
+  years: clamp(parseInt($('years').value)||0, 0, 50)
+});
+
 const calc = () => {
-  const pv = parseFloat($('pv').value)||0, pmt = parseFloat($('pmt').value)||0;
-  const rate = parseFloat($('rate').value)||0, years = parseInt($('years').value)||0;
+  const {pv, pmt, rate, years} = read();
   if (years <= 0) return;
   const lo = Math.max(0, rate-SPREAD), hi = rate+SPREAD;
   const L = run(pv,pmt,lo,years), M = run(pv,pmt,rate,years), H = run(pv,pmt,hi,years);
-  const n = years-1, total = M.T[n], gain = Math.max(0, total-M.P[n]), tax = gain*TAX;
-  $('alertMonthly').classList.toggle('hidden', pmt <= 300000);
-  $('alertLifetime').classList.toggle('hidden', M.P[n] <= LIMIT);
+  const n = years-1, total = M.T[n], principal = M.P[n];
+
+  // 課税口座だけの場合：運用益すべてに課税
+  const allGain = Math.max(0, total - principal);
+  const taxOnly = total - allGain*TAX;
+  // NISAを使った場合：枠を超えた課税口座分の運用益だけに課税
+  const txGain = Math.max(0, M.tx - M.txP);
+  const nisaNet = total - txGain*TAX;
+  const saved = nisaNet - taxOnly;
+
+  $('alertMonthly').classList.toggle('hidden', pmt <= MONTHLY);
+  $('alertYear1').classList.toggle('hidden', !(pmt <= MONTHLY && pv > 0 && pv + pmt*12 > ANNUAL));
+  $('alertLifetime').classList.toggle('hidden', !M.fullYear);
+  if (M.fullYear) $('alertLifetimeText').textContent = `${M.fullYear}年目に生涯の非課税枠（1,800万円）を使い切ります。`;
+  $('overNote').textContent = M.txP > 0 ? `NISA枠を超えた元本${man(M.txP)}は課税口座で運用した前提です。` : '';
+
   $('lo').textContent = yen(L.T[n]); $('mi').textContent = yen(total); $('hi').textContent = yen(H.T[n]);
   $('loRate').textContent = '年'+lo.toFixed(1)+'%'; $('miRate').textContent = '年'+rate.toFixed(1)+'%'; $('hiRate').textContent = '年'+hi.toFixed(1)+'%';
-  $('nisaTotal').textContent = yen(total); $('taxTotal').textContent = yen(total-tax); $('taxSaved').textContent = yen(tax);
+  $('nisaTotal').textContent = yen(nisaNet); $('taxTotal').textContent = yen(taxOnly); $('taxSaved').textContent = yen(saved);
+
   let rows = '';
   for (let i = 0; i <= n; i++) {
-    const over = M.P[i] > LIMIT;
-    rows += `<tr class="${over?'bg-red-50 text-red-700':''}"><td class="py-2 px-4 text-center font-medium">${i+1}年目</td><td class="py-2 px-4">${yen(M.P[i])}</td><td class="py-2 px-4">${yen(L.T[i])}</td><td class="py-2 px-4 font-bold">${yen(M.T[i])}</td><td class="py-2 px-4">${yen(H.T[i])}</td></tr>`;
+    const over = M.fullYear && i+1 > M.fullYear;
+    rows += `<tr class="${over?'bg-amber-50 text-amber-800':''}"><td class="py-2 px-4 text-center font-medium">${i+1}年目</td><td class="py-2 px-4">${yen(M.P[i])}</td><td class="py-2 px-4">${yen(L.T[i])}</td><td class="py-2 px-4 font-bold">${yen(M.T[i])}</td><td class="py-2 px-4">${yen(H.T[i])}</td></tr>`;
   }
   $('tableBody').innerHTML = rows;
   chart.data.labels = M.T.map((_,i) => (i+1)+'年目');
   [M.P, L.T, M.T, H.T].forEach((d,i) => chart.data.datasets[i].data = d.map(Math.floor));
   chart.update();
-  last = {pmt, rate, years, pv, total, gain, tax};
+  last = {pmt, rate, years, pv, total, gain: allGain, saved};
 };
 
 const reverse = () => {
-  const pv = parseFloat($('pv').value)||0, rate = parseFloat($('rate').value)||0;
-  const years = parseInt($('years').value)||0, fv = parseFloat($('targetFv').value)||0;
+  const {pv, rate, years} = read();
+  const fv = parseFloat($('targetFv').value)||0;
   if (years <= 0) return;
   const r = rate/100/12, mo = years*12; let req;
   if (rate === 0) req = (fv-pv)/mo;
   else { const g = Math.pow(1+r, mo); req = (fv - pv*g) * r / (g-1); }
   req = Math.max(0, Math.ceil(req));
-  $('pmt').value = req; $('pmtRange').value = Math.min(req, 300000);
+  $('pmt').value = req; $('pmtRange').value = Math.min(req, MONTHLY);
+  const msg = $('reverseMsg');
+  if (req > MONTHLY) {
+    msg.textContent = `必要な積立額は月${req.toLocaleString('ja-JP')}円で、NISAの上限（月30万円）を超えます。期間を延ばすか、目標を見直すことを検討してください。`;
+    msg.classList.remove('hidden');
+  } else msg.classList.add('hidden');
   calc();
 };
 
@@ -235,7 +285,7 @@ window.addEventListener('DOMContentLoaded', () => {
   $('pv').addEventListener('input', calc);
   $('btnReverse').addEventListener('click', reverse);
   $('btnX').addEventListener('click', () => {
-    const text = `毎月${last.pmt.toLocaleString('ja-JP')}円を${last.years}年積み立てると、年利${last.rate}%で約${man(last.total)}（運用益${man(last.gain)}）。課税口座との差は約${man(last.tax)}。\n#NISA #実用性ゼロ工房\n※ページ内に広告あり`;
+    const text = `毎月${last.pmt.toLocaleString('ja-JP')}円を${last.years}年積み立てると、年利${last.rate}%で約${man(last.total)}（運用益${man(last.gain)}）。課税口座だけの場合との差は約${man(last.saved)}。\n#NISA #実用性ゼロ工房\n※ページ内に広告あり`;
     window.open('https://x.com/intent/post?text='+encodeURIComponent(text)+'&url='+encodeURIComponent(shareUrl()), '_blank');
   });
   $('btnCopy').addEventListener('click', async () => {
