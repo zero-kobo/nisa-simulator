@@ -285,7 +285,7 @@ window.addEventListener('DOMContentLoaded', () => {
   $('pv').addEventListener('input', calc);
   $('btnReverse').addEventListener('click', reverse);
   $('btnX').addEventListener('click', () => {
-    const text = `毎月${last.pmt.toLocaleString('ja-JP')}円を${last.years}年積み立てると、年利${last.rate}%で約${man(last.total)}（運用益${man(last.gain)}）。課税口座だけの場合との差は約${man(last.saved)}。\n#NISA #実用性ゼロ工房\n※ページ内に広告あり`;
+    const text = `毎月${last.pmt.toLocaleString('ja-JP')}円を${last.years}年積み立てると、年利${last.rate}%で約${man(last.total)}（運用益${man(last.gain)}）。課税口座だけの場合との差は約${man(last.saved)}。\n#NISA #ちいさなツール工房\n※ページ内に広告あり`;
     window.open('https://x.com/intent/post?text='+encodeURIComponent(text)+'&url='+encodeURIComponent(shareUrl()), '_blank');
   });
   $('btnCopy').addEventListener('click', async () => {
