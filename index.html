@@ -4,22 +4,42 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="google-site-verification" content="Rj3mWzplrv9xBEGa_NL3Vwb5G_eaeUphb7fIzfMr77w" />
-<title>NISA積立シミュレーター｜通常口座との比較・3パターン試算</title>
-<meta name="description" content="毎月の積立額・年利・期間を入力すると、悲観・標準・楽観の3パターンで将来の資産額を試算。課税口座と比べたNISAの節税額も分かります。結果はXで共有できます。">
+<title>NISA積立シミュレーター｜取り崩し・通常口座との比較・3パターン試算</title>
+<meta name="description" content="毎月の積立額・年利・期間を入力すると、悲観・標準・楽観の3パターンで将来の資産額を試算。積み立てた後に毎月取り崩すと何年もつか、課税口座と比べたNISAの節税額も分かります。無料・登録不要。">
 <link rel="canonical" href="https://zero-kobo.github.io/nisa-simulator/">
-<meta property="og:title" content="NISA積立シミュレーター｜通常口座との比較・3パターン試算">
-<meta property="og:description" content="悲観・標準・楽観の3パターンと、課税口座との差を一度に確認できます。">
+<meta property="og:title" content="NISA積立シミュレーター｜取り崩し・通常口座との比較・3パターン試算">
+<meta property="og:description" content="積み立てたお金は何年もつ？悲観・標準・楽観の3パターンで、積立から取り崩しまで一度に確認できます。">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://zero-kobo.github.io/nisa-simulator/">
 <meta property="og:image" content="https://zero-kobo.github.io/nisa-simulator/ogp.png">
+<meta property="og:site_name" content="ちいさなツール工房">
+<meta property="og:locale" content="ja_JP">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="NISA積立シミュレーター｜取り崩し・通常口座との比較・3パターン試算">
+<meta name="twitter:description" content="積み立てたお金は何年もつ？悲観・標準・楽観の3パターンで、積立から取り崩しまで一度に確認できます。">
 <meta name="twitter:image" content="https://zero-kobo.github.io/nisa-simulator/ogp.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "NISA積立シミュレーター",
+  "url": "https://zero-kobo.github.io/nisa-simulator/",
+  "description": "NISAの積立額・年利・期間から将来の資産額を3パターンで試算し、積立後に取り崩すと何年もつか、課税口座との差も確認できる無料ツール。",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web",
+  "inLanguage": "ja",
+  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "JPY"},
+  "publisher": {"@type": "Organization", "name": "ちいさなツール工房"},
+  "dateModified": "2026-10-22"
+}
+</script>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 body{font-family:'Noto Sans JP',sans-serif;background:#f8fafc}
 input[type=range]{accent-color:#0ea5e9}
+.mode-btn[aria-pressed=true]{background:#0ea5e9;color:#fff;border-color:#0ea5e9}
 </style>
 <!-- Google tag (GA4) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-40QSGNSQEL"></script>
@@ -30,7 +50,7 @@ input[type=range]{accent-color:#0ea5e9}
 
 <header class="text-center mb-6">
 <h1 class="text-3xl md:text-4xl font-bold text-slate-900 tracking-tight">NISA積立シミュレーター</h1>
-<p class="text-slate-500 mt-2">毎月の積立額を入力すると、悲観・標準・楽観の3パターンで将来の資産額を試算します。</p>
+<p class="text-slate-500 mt-2">毎月の積立額を入力すると、悲観・標準・楽観の3パターンで将来の資産額を試算します。<br class="hidden sm:inline">積み立てた後に<a href="#withdraw" class="text-sky-600 underline">取り崩すと何年もつか</a>も分かります。</p>
 </header>
 
 <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -123,6 +143,7 @@ input[type=range]{accent-color:#0ea5e9}
 <button id="btnX" class="bg-slate-900 text-white font-bold py-3 px-6 rounded-xl">Xに投稿する</button>
 <button id="btnCopy" class="bg-slate-100 text-slate-700 font-bold py-3 px-6 rounded-xl">条件つきリンクをコピー</button>
 </div>
+<p class="text-xs text-slate-400 mt-3">条件つきリンクには、入力した積立・取り崩しの条件が含まれます（年齢を入れた場合は年齢も）。</p>
 </div>
 </div>
 </div>
@@ -144,6 +165,88 @@ input[type=range]{accent-color:#0ea5e9}
 </div>
 </div>
 
+<!-- 取り崩しシミュレーション -->
+<section id="withdraw" class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 scroll-mt-4">
+<div class="flex items-center gap-2 mb-1">
+<h2 class="text-lg md:text-xl font-bold text-slate-900">取り崩しシミュレーション</h2>
+<span class="text-[10px] font-bold bg-rose-500 text-white rounded-full px-2 py-0.5">NEW</span>
+</div>
+<p class="text-sm text-slate-500 mb-5">上の積立が終わったあと、毎月取り崩して使っていくと何年もつかを試算します。取り崩している間も、残りのお金は運用を続ける前提です。</p>
+
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+<div class="lg:col-span-4 space-y-5">
+<div>
+<p class="block text-sm font-medium text-slate-600 mb-2">取り崩し方</p>
+<div class="grid grid-cols-2 gap-2" role="group" aria-label="取り崩し方">
+<button type="button" id="modeFix" class="mode-btn border border-slate-200 rounded-xl py-2 text-sm font-bold" aria-pressed="true">毎月◯円ずつ</button>
+<button type="button" id="modePct" class="mode-btn border border-slate-200 rounded-xl py-2 text-sm font-bold" aria-pressed="false">毎年◯%ずつ</button>
+</div>
+</div>
+<div id="boxFix">
+<label class="block text-sm font-medium text-slate-600 mb-1" for="wAmt">毎月の取り崩し額 (円・手取り)</label>
+<input type="number" id="wAmt" value="100000" min="0" step="5000" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-lg font-medium focus:outline-none focus:ring-2 focus:ring-blue-500">
+<input type="range" id="wAmtRange" min="0" max="500000" step="5000" value="100000" aria-label="毎月の取り崩し額" class="w-full mt-3">
+</div>
+<div id="boxPct" class="hidden">
+<label class="block text-sm font-medium text-slate-600 mb-1" for="wPct">毎年の取り崩し率 (%)</label>
+<div class="flex items-center space-x-4">
+<input type="number" id="wPct" value="4" min="0.5" max="20" step="0.5" class="w-24 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-lg font-medium focus:outline-none focus:ring-2 focus:ring-blue-500">
+<input type="range" id="wPctRange" min="0.5" max="10" step="0.5" value="4" aria-label="毎年の取り崩し率" class="flex-1">
+</div>
+<p class="text-xs text-slate-400 mt-1">毎年はじめの残高×◯%を、12か月に分けて受け取ります。残高に合わせて受け取る額が変わるので、お金が0円になることはありません。</p>
+</div>
+<div>
+<label class="block text-sm font-medium text-slate-600 mb-1" for="wRate">取り崩し中の想定年利 (%) ※標準パターン</label>
+<div class="flex items-center space-x-4">
+<input type="number" id="wRate" value="3.0" min="0" max="15" step="0.1" class="w-24 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-lg font-medium focus:outline-none focus:ring-2 focus:ring-blue-500">
+<input type="range" id="wRateRange" min="0" max="10" step="0.1" value="3.0" aria-label="取り崩し中の想定年利" class="flex-1">
+</div>
+<p class="text-xs text-slate-400 mt-1">受け取る時期は、積立の時期より控えめに見ておくと安心です。悲観は−2%、楽観は+2%で計算します。</p>
+</div>
+<div>
+<label class="block text-sm font-medium text-slate-600 mb-1" for="age">今の年齢 (任意)</label>
+<input type="number" id="age" value="" min="0" max="100" placeholder="例：35" class="w-24 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-lg font-medium focus:outline-none focus:ring-2 focus:ring-blue-500">
+<p class="text-xs text-slate-400 mt-1">入れると「何歳まで」で表示します。</p>
+</div>
+</div>
+
+<div class="lg:col-span-8 space-y-4">
+<p class="text-sm text-slate-600">取り崩し開始：<span id="wStart" class="font-bold text-slate-900"></span></p>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+<div class="bg-slate-50 p-4 rounded-2xl">
+<p class="text-xs font-bold text-red-500">悲観 <span id="wLoRate"></span></p>
+<p class="text-lg md:text-xl font-extrabold text-slate-800 mt-1" id="wLo"></p>
+<p class="text-xs text-slate-500 mt-1" id="wLoSub"></p>
+</div>
+<div class="bg-sky-50 p-4 rounded-2xl border-2 border-sky-400">
+<p class="text-xs font-bold text-sky-600">標準 <span id="wMiRate"></span></p>
+<p class="text-lg md:text-xl font-extrabold text-slate-800 mt-1" id="wMi"></p>
+<p class="text-xs text-slate-500 mt-1" id="wMiSub"></p>
+</div>
+<div class="bg-slate-50 p-4 rounded-2xl">
+<p class="text-xs font-bold text-emerald-600">楽観 <span id="wHiRate"></span></p>
+<p class="text-lg md:text-xl font-extrabold text-slate-800 mt-1" id="wHi"></p>
+<p class="text-xs text-slate-500 mt-1" id="wHiSub"></p>
+</div>
+</div>
+
+<div class="bg-amber-50 p-4 rounded-2xl border border-amber-100">
+<div class="flex flex-wrap items-center gap-2 text-sm text-amber-900">
+<input type="number" id="wYears" value="30" min="1" max="60" aria-label="もたせたい年数" class="w-20 bg-white border border-amber-200 rounded-lg px-3 py-2 font-bold focus:outline-none focus:ring-2 focus:ring-amber-500">
+<span>年もたせるなら、毎月使える額は</span>
+</div>
+<p class="text-2xl font-extrabold text-amber-900 mt-2" id="wCanUse"></p>
+<p class="text-xs text-amber-700 mt-1" id="wCanUseSub"></p>
+</div>
+
+<div class="bg-white h-[320px]">
+<canvas id="withdrawChart"></canvas>
+</div>
+<p class="text-xs text-slate-400" id="wNote"></p>
+</div>
+</div>
+</section>
+
 <!-- note記事へのリンク -->
 <div class="bg-white p-6 rounded-3xl border border-slate-100 max-w-3xl">
 <h2 class="text-base font-bold text-slate-800 mb-2">このツールについて</h2>
@@ -160,7 +263,11 @@ input[type=range]{accent-color:#0ea5e9}
 <p>年間の投資枠は、つみたて投資枠が120万円、成長投資枠が240万円で、合計360万円（月30万円）です。生涯の非課税保有限度額は1,800万円です。</p>
 <h3 class="font-bold text-slate-800">利回りは何％にすればいい？</h3>
 <p>将来の利回りは誰にも分かりません。1つの数字で決めず、悲観・標準・楽観の幅で見るのがおすすめです。</p>
-<p class="text-xs text-slate-400">本ツールは2026年10月時点の制度（年間投資枠360万円・生涯非課税保有限度額1,800万円・税率20.315%）をもとに、一定の利回りが続くと仮定した試算です。将来の運用成果を保証するものではありません。手数料、制度の変更、売却による非課税枠の再利用は考慮していません。投資の判断はご自身でお願いします。本ページには広告（アフィリエイトリンク）を含みます。</p>
+<h3 class="font-bold text-slate-800">取り崩しはどう計算している？</h3>
+<p>積立が終わった時点の資産（悲観・標準・楽観それぞれ）から、毎月取り崩していきます。残りは「取り崩し中の想定年利」で運用を続ける前提です。NISAの中のお金は、売却しても税金がかかりません。枠を超えて課税口座で運用した分がある場合は、先に課税口座から取り崩し、その運用益にかかる税金（20.315%）を引いて手取りを計算します。</p>
+<h3 class="font-bold text-slate-800">「毎月◯円」と「毎年◯%」はどちらがいい？</h3>
+<p>「毎月◯円」は生活費の見通しが立てやすい反面、相場が悪いとお金が早く減ります。「毎年◯%」は残高に合わせて受け取る額が変わるので、お金が尽きにくい反面、受け取る額が年によって増えたり減ったりします。両方を試して、自分に合う形を考えてみてください。</p>
+<p class="text-xs text-slate-400">本ツールは2026年10月時点の制度（年間投資枠360万円・生涯非課税保有限度額1,800万円・税率20.315%）をもとに、一定の利回りが続くと仮定した試算です。将来の運用成果を保証するものではありません。実際の相場は毎年上下するため、同じ平均利回りでも、取り崩し初期に下落が続くと、お金が早く尽きることがあります。手数料、インフレ、制度の変更、売却による非課税枠の再利用、年金などほかの収入は考慮していません。投資の判断はご自身でお願いします。本ページには広告（アフィリエイトリンク）を含みます。</p>
 </section>
 
 </div>
@@ -168,10 +275,14 @@ input[type=range]{accent-color:#0ea5e9}
 <script>
 const $ = id => document.getElementById(id);
 const yen = n => new Intl.NumberFormat('ja-JP',{style:'currency',currency:'JPY',maximumFractionDigits:0}).format(n);
-const man = n => Math.round(n/10000).toLocaleString('ja-JP') + '万円';
-const TAX = 0.20315, SPREAD = 2, LIMIT = 18000000, ANNUAL = 3600000, MONTHLY = 300000;
+const man = n => {
+  const v = Math.round(n/10000), oku = Math.floor(v/10000), rest = v % 10000;
+  return oku ? `${oku}億${rest ? rest.toLocaleString('ja-JP')+'万' : ''}円` : v.toLocaleString('ja-JP') + '万円';
+};
+const man1 = n => (Math.round(n/1000)/10).toLocaleString('ja-JP') + '万円'; // 月額用（小数1桁）
+const TAX = 0.20315, SPREAD = 2, LIMIT = 18000000, ANNUAL = 3600000, MONTHLY = 300000, WMAX = 60;
 const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
-let chart, last = {};
+let chart, wChart, last = {}, wMode = 'fix';
 
 // NISA枠（年間360万円・生涯1,800万円）を超えた分は課税口座で運用する前提
 const run = (pv, pmt, rate, years) => {
@@ -191,14 +302,72 @@ const run = (pv, pmt, rate, years) => {
     if (!fullYear && nisaP >= LIMIT) fullYear = y;
     T.push(nisa+tx); P.push(nisaP+txP);
   }
-  return {T, P, tx, txP, fullYear};
+  return {T, P, nisa, tx, txP, fullYear};
+};
+
+// 取り崩し：毎月 運用→月末に受け取る。課税口座の分から先に取り崩し、運用益に課税（手取りで計算）
+// mode 'fix'：毎月の手取りが amt 円 / mode 'pct'：毎年はじめの残高×pct%を12等分（税引き前）
+const draw = (start, mode, amt, pct, rate, maxYears = WMAX) => {
+  const r = rate/100/12;
+  let nisa = start.nisa, tx = start.tx, basis = start.txP;
+  let months = Infinity, received = 0, gross = 0, firstNet = null, lastNet = 0;
+  const B = [nisa+tx];
+  for (let m = 0; m < maxYears*12; m++) {
+    if (m % 12 === 0 && mode === 'pct') gross = (nisa+tx)*pct/100/12;
+    nisa *= 1+r; tx *= 1+r;
+    let net = 0;
+    if (mode === 'fix') {
+      let need = amt;
+      if (tx > 0 && need > 0) {
+        const gr = Math.max(0, 1 - basis/tx), k = 1 - gr*TAX;
+        const g = Math.min(tx, need/k);
+        basis -= basis * g/tx; tx -= g; net += g*k; need -= g*k;
+        if (tx < 1e-6) { tx = 0; basis = 0; }
+      }
+      const fromN = Math.min(nisa, need); nisa -= fromN; net += fromN; need -= fromN;
+      received += net;
+      if (need > 0.5) { months = m; B.push(0); break; } // 満額を受け取れた月数
+    } else {
+      let g = Math.min(gross, nisa+tx);
+      if (tx > 0) {
+        const gr = Math.max(0, 1 - basis/tx), gt = Math.min(tx, g);
+        basis -= basis * gt/tx; tx -= gt; net += gt*(1-gr*TAX); g -= gt;
+      }
+      const fromN = Math.min(nisa, g); nisa -= fromN; net += fromN;
+      received += net;
+    }
+    if (firstNet === null) firstNet = net;
+    lastNet = net;
+    if ((m+1) % 12 === 0) B.push(nisa+tx);
+  }
+  return {months, received, end: nisa+tx, B, firstNet, lastNet};
+};
+
+// 「◯年もたせるなら毎月いくら使えるか」（定額・手取り）を二分探索で求める
+const canUse = (start, rate, years) => {
+  let lo = 0, hi = start.nisa + start.tx + 1;
+  for (let i = 0; i < 60; i++) {
+    const mid = (lo+hi)/2;
+    if (draw(start, 'fix', mid, 0, rate, years).months === Infinity) lo = mid; else hi = mid;
+  }
+  return Math.floor(lo/100)*100;
+};
+
+const ym = months => {
+  const y = Math.floor(months/12), m = months % 12;
+  return (y ? y+'年' : '') + (m ? m+'か月' : (y ? '' : '0か月'));
 };
 
 const read = () => ({
   pv: Math.max(0, parseFloat($('pv').value)||0),
   pmt: Math.max(0, parseFloat($('pmt').value)||0),
   rate: clamp(parseFloat($('rate').value)||0, 0, 20),
-  years: clamp(parseInt($('years').value)||0, 0, 50)
+  years: clamp(parseInt($('years').value)||0, 0, 50),
+  wAmt: Math.max(0, parseFloat($('wAmt').value)||0),
+  wPct: clamp(parseFloat($('wPct').value)||0, 0, 20),
+  wRate: clamp(parseFloat($('wRate').value)||0, 0, 15),
+  wYears: clamp(parseInt($('wYears').value)||0, 1, WMAX),
+  age: $('age').value === '' ? null : clamp(parseInt($('age').value)||0, 0, 100)
 });
 
 const calc = () => {
@@ -236,6 +405,42 @@ const calc = () => {
   [M.P, L.T, M.T, H.T].forEach((d,i) => chart.data.datasets[i].data = d.map(Math.floor));
   chart.update();
   last = {pmt, rate, years, pv, total, gain: allGain, saved};
+  calcWithdraw({L, M, H});
+};
+
+const calcWithdraw = ({L, M, H}) => {
+  const {years, wAmt, wPct, wRate, wYears, age} = read();
+  const wlo = Math.max(0, wRate-SPREAD), whi = wRate+SPREAD;
+  const startAge = age === null ? null : age + years;
+  const ageAt = months => startAge === null ? '' : `${startAge + Math.floor(months/12)}歳${months%12 ? (months%12)+'か月' : ''}まで`;
+  const horizon = wMode === 'fix' ? WMAX : wYears;
+  const res = [[L, wlo], [M, wRate], [H, whi]].map(([s, r]) => draw(s, wMode, wAmt, wPct, r, horizon));
+
+  $('wStart').textContent = `${startAge === null ? years+'年後' : startAge+'歳'}、資産 約${man(M.T[years-1])}（標準）`;
+  $('wLoRate').textContent = '年'+wlo.toFixed(1)+'%'; $('wMiRate').textContent = '年'+wRate.toFixed(1)+'%'; $('wHiRate').textContent = '年'+whi.toFixed(1)+'%';
+  ['wLo','wMi','wHi'].forEach((id, i) => {
+    const d = res[i];
+    if (wMode === 'fix') {
+      if (d.months === Infinity) { $(id).textContent = `${WMAX}年以上もつ`; $(id+'Sub').textContent = `${WMAX}年後も約${man(d.end)}残ります`; }
+      else { $(id).textContent = `${ym(d.months)}もつ`; $(id+'Sub').textContent = (ageAt(d.months) ? ageAt(d.months)+'・' : '') + `受け取り合計 約${man(d.received)}`; }
+    } else {
+      $(id).textContent = `1年目 月${man1(d.firstNet)}`;
+      $(id+'Sub').textContent = `${wYears}年目は月${man1(d.lastNet)}・${wYears}年後の残高 約${man(d.end)}`;
+    }
+  });
+
+  const can = canUse(M, wRate, wYears);
+  $('wCanUse').textContent = `月 ${yen(can)}`;
+  $('wCanUseSub').textContent = `標準パターン（取り崩し中 年${wRate.toFixed(1)}%）で、${wYears}年後にちょうど使い切る額です。` + (startAge === null ? '' : `${startAge}歳から${startAge+wYears}歳まで。`) + `悲観パターンなら月${yen(canUse(L, wlo, wYears))}。`;
+
+  const len = Math.max(...res.map(d => d.B.length));
+  wChart.data.labels = Array.from({length: len}, (_, i) => startAge === null ? (i === 0 ? '開始' : i+'年後') : (startAge+i)+'歳');
+  res.forEach((d, i) => wChart.data.datasets[i].data = d.B.map(Math.floor));
+  wChart.update();
+
+  $('wNote').textContent = M.txP > 0 ? 'NISA枠を超えて課税口座で運用した分は、先に取り崩し、運用益に20.315%の税金がかかる前提で手取りを計算しています。' : 'NISAの中のお金は、取り崩しても税金がかかりません。';
+  const std = res[1];
+  last = {...last, wMode, wAmt, wPct, wRate, wYears, age, wMonths: std.months, wFirst: std.firstNet};
 };
 
 const reverse = () => {
@@ -256,8 +461,17 @@ const reverse = () => {
 };
 
 const shareUrl = () => {
-  const q = new URLSearchParams({pv:last.pv, pmt:last.pmt, rate:last.rate, years:last.years});
-  return location.origin + location.pathname + '?' + q.toString();
+  const o = {pv:last.pv, pmt:last.pmt, rate:last.rate, years:last.years, wm:last.wMode, wAmt:last.wAmt, wPct:last.wPct, wRate:last.wRate, wYears:last.wYears};
+  if (last.age !== null && last.age !== undefined) o.age = last.age;
+  return location.origin + location.pathname + '?' + new URLSearchParams(o).toString();
+};
+
+const setMode = m => {
+  wMode = m === 'pct' ? 'pct' : 'fix';
+  $('modeFix').setAttribute('aria-pressed', wMode === 'fix');
+  $('modePct').setAttribute('aria-pressed', wMode === 'pct');
+  $('boxFix').classList.toggle('hidden', wMode !== 'fix');
+  $('boxPct').classList.toggle('hidden', wMode !== 'pct');
 };
 
 const pair = (a, b) => {
@@ -267,9 +481,11 @@ const pair = (a, b) => {
 
 window.addEventListener('DOMContentLoaded', () => {
   const qs = new URLSearchParams(location.search);
-  [['pv'],['pmt','pmtRange'],['rate','rateRange'],['years','yearsRange']].forEach(([a,b]) => {
+  [['pv'],['pmt','pmtRange'],['rate','rateRange'],['years','yearsRange'],['wAmt','wAmtRange'],['wPct','wPctRange'],['wRate','wRateRange'],['wYears'],['age']].forEach(([a,b]) => {
     if (qs.has(a) && !isNaN(parseFloat(qs.get(a)))) { $(a).value = qs.get(a); if (b) $(b).value = qs.get(a); }
   });
+  setMode(qs.get('wm'));
+  const yTick = {callback:v => v>=10000 ? (v/10000).toLocaleString('ja-JP')+'万円' : v};
   chart = new Chart($('assetChart').getContext('2d'), {
     type: 'line',
     data: { labels: [], datasets: [
@@ -281,14 +497,33 @@ window.addEventListener('DOMContentLoaded', () => {
     options: {
       responsive:true, maintainAspectRatio:false, interaction:{mode:'index', intersect:false},
       plugins:{ legend:{position:'bottom'}, tooltip:{callbacks:{label:c => c.dataset.label+': '+yen(c.parsed.y)}} },
-      scales:{ y:{ ticks:{callback:v => v>=10000 ? v/10000+'万円' : v} }, x:{grid:{display:false}} }
+      scales:{ y:{ ticks:yTick }, x:{grid:{display:false}} }
+    }
+  });
+  wChart = new Chart($('withdrawChart').getContext('2d'), {
+    type: 'line',
+    data: { labels: [], datasets: [
+      {label:'悲観', borderColor:'#ef4444', pointRadius:0, borderWidth:2},
+      {label:'標準', borderColor:'#0ea5e9', pointRadius:0, borderWidth:3},
+      {label:'楽観', borderColor:'#10b981', pointRadius:0, borderWidth:2}
+    ]},
+    options: {
+      responsive:true, maintainAspectRatio:false, interaction:{mode:'index', intersect:false},
+      plugins:{ legend:{position:'bottom'}, title:{display:true, text:'取り崩し中の残高'}, tooltip:{callbacks:{label:c => c.dataset.label+': '+yen(c.parsed.y)}} },
+      scales:{ y:{ min:0, ticks:yTick }, x:{grid:{display:false}} }
     }
   });
   pair('pmt','pmtRange'); pair('rate','rateRange'); pair('years','yearsRange');
-  $('pv').addEventListener('input', calc);
+  pair('wAmt','wAmtRange'); pair('wPct','wPctRange'); pair('wRate','wRateRange');
+  ['pv','wYears','age'].forEach(id => $(id).addEventListener('input', calc));
+  $('modeFix').addEventListener('click', () => { setMode('fix'); calc(); });
+  $('modePct').addEventListener('click', () => { setMode('pct'); calc(); });
   $('btnReverse').addEventListener('click', reverse);
   $('btnX').addEventListener('click', () => {
-    const text = `毎月${last.pmt.toLocaleString('ja-JP')}円を${last.years}年積み立てると、年利${last.rate}%で約${man(last.total)}（運用益${man(last.gain)}）。課税口座だけの場合との差は約${man(last.saved)}。\n#NISA #ちいさなツール工房\n※ページ内に広告あり`;
+    let w = '';
+    if (last.wMode === 'fix') w = last.wMonths === Infinity ? `その後、月${man1(last.wAmt)}ずつ取り崩しても${WMAX}年以上もつ計算。` : `その後、月${man1(last.wAmt)}ずつ取り崩すと約${ym(last.wMonths)}もつ計算。`;
+    else w = `その後、毎年${last.wPct}%ずつ取り崩すと1年目は月${man1(last.wFirst)}。`;
+    const text = `毎月${last.pmt.toLocaleString('ja-JP')}円を${last.years}年積み立てると、年利${last.rate}%で約${man(last.total)}。${w}\n#NISA #ちいさなツール工房\n※ページ内に広告あり`;
     window.open('https://x.com/intent/post?text='+encodeURIComponent(text)+'&url='+encodeURIComponent(shareUrl()), '_blank');
   });
   $('btnCopy').addEventListener('click', async () => {
@@ -306,6 +541,14 @@ window.addEventListener('DOMContentLoaded', () => {
 <script type="text/javascript">rakuten_design="slide";rakuten_affiliateId="1713d060.335a82be.1713d061.5d5faf0d";rakuten_items="ctsmatch";rakuten_genreId="0";rakuten_size="320x48";rakuten_target="_blank";rakuten_theme="gray";rakuten_border="off";rakuten_auto_mode="on";rakuten_genre_title="off";rakuten_recommend="on";rakuten_ts="1790656798017";</script>
 <script type="text/javascript" src="https://xml.affiliate.rakuten.co.jp/widget/js/rakuten_widget.js?20230106"></script>
 </div>
+
+<footer class="max-w-3xl mx-auto mt-8 pb-6 text-xs text-slate-500 leading-relaxed space-y-3">
+<p><span class="font-bold text-slate-600">運営者：</span>ちいさなツール工房（<a href="https://note.com/zero_kobo" target="_blank" rel="noopener" class="underline">note</a>／<a href="https://x.com/zero_kobo_" target="_blank" rel="noopener" class="underline">X</a>）。お問い合わせは、上のnote記事のコメント欄へどうぞ。</p>
+<p><span class="font-bold text-slate-600">広告について：</span>このページには、楽天アフィリエイトなどの広告（PR）を含みます。リンクからお買い物があると、運営者に紹介料が入ることがあります。</p>
+<p><span class="font-bold text-slate-600">プライバシーポリシー：</span>アクセス状況を知るために、Googleアナリティクス（GA4）を使っています。GA4はCookieを使って、個人を特定しない形でアクセス情報を集めます。入力した金額や年齢は、ブラウザの中だけで計算し、こちらに送られることはありません（共有ボタンを押した場合は、その条件がリンクに含まれます）。データ収集を止めたい場合は、ブラウザのCookieを無効にするか、<a href="https://tools.google.com/dlpage/gaoptout?hl=ja" target="_blank" rel="noopener" class="underline">Googleアナリティクス オプトアウト アドオン</a>をご利用ください。</p>
+<p><span class="font-bold text-slate-600">免責事項：</span>計算結果は概算です。実際の運用成果や税金とは異なることがあります。制度の最新情報は、金融庁などの公式情報で確認してください。</p>
+<p>最終更新日：2026年10月22日</p>
+</footer>
 
 </body>
 </html>
