@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>こどもNISAシミュレーター｜0歳から月1万円で18歳にいくら？【2027年開始】</title>
+<meta name="description" content="2027年1月に始まるこどもNISA（0〜17歳・年60万円・上限600万円）の積立シミュレーター。子どもの年齢と毎月の積立額を入れると、12歳・15歳・18歳でいくらになるかを悲観・標準・楽観の3パターンで試算します。無料・登録不要。">
+<link rel="canonical" href="https://zero-kobo.github.io/nisa-simulator/kodomo/">
+<meta name="theme-color" content="#0ea5e9">
+<meta property="og:title" content="こどもNISAシミュレーター｜0歳から月1万円で18歳にいくら？">
+<meta property="og:description" content="子どもの年齢と毎月の積立額を入れるだけ。12歳・15歳・18歳でいくらになるかを3パターンで試算します。2027年1月開始のこどもNISAに対応。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://zero-kobo.github.io/nisa-simulator/kodomo/">
+<meta property="og:image" content="https://zero-kobo.github.io/nisa-simulator/kodomo/ogp.png">
+<meta property="og:site_name" content="ちいさなツール工房">
+<meta property="og:locale" content="ja_JP">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="こどもNISAシミュレーター｜0歳から月1万円で18歳にいくら？">
+<meta name="twitter:description" content="子どもの年齢と毎月の積立額を入れるだけ。12歳・15歳・18歳でいくらになるかを3パターンで試算します。">
+<meta name="twitter:image" content="https://zero-kobo.github.io/nisa-simulator/kodomo/ogp.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🌱%3C/text%3E%3C/svg%3E">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "こどもNISAシミュレーター",
+      "url": "https://zero-kobo.github.io/nisa-simulator/kodomo/",
+      "description": "2027年1月に始まるこどもNISAの積立シミュレーター。子どもの年齢と毎月の積立額から、12歳・15歳・18歳時点の資産額を3パターンで試算する無料ツール。",
+      "applicationCategory": "FinanceApplication",
+      "operatingSystem": "Web",
+      "inLanguage": "ja",
+      "offers": {"@type": "Offer", "price": "0", "priceCurrency": "JPY"},
+      "publisher": {"@type": "Organization", "name": "ちいさなツール工房"},
+      "dateModified": "2026-11-10"
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {"@type": "Question", "name": "こどもNISAはいつから始まりますか？", "acceptedAnswer": {"@type": "Answer", "text": "2027年1月から、NISAのつみたて投資枠の年齢の条件がなくなり、0〜17歳でも口座を作れるようになります。"}},
+        {"@type": "Question", "name": "こどもNISAは毎月いくらまで積み立てられますか？", "acceptedAnswer": {"@type": "Answer", "text": "年間の投資枠は60万円です。毎月同じ額を積み立てるなら月5万円までが目安です。非課税で持てる上限（元本）は600万円です。"}},
+        {"@type": "Question", "name": "こどもNISAのお金は途中で引き出せますか？", "acceptedAnswer": {"@type": "Answer", "text": "0〜17歳の間は、原則として引き出せません。12歳以降は、子どものために使うこと、子ども本人が同意した書面があることなどの条件を満たせば、引き出せます。"}},
+        {"@type": "Question", "name": "18歳になったらどうなりますか？", "acceptedAnswer": {"@type": "Answer", "text": "18歳になる年の1月1日に、大人のNISA口座へ自動で引き継がれます。それまでに積み立てた分は、そのまま非課税で持ち続けられます。"}}
+      ]
+    }
+  ]
+}
+</script>
+<style>
+:root{--ink:#0f172a;--text:#1e293b;--sub:#64748b;--mute:#94a3b8;--bg:#f8fafc;--card:#fff;--line:#e2e8f0;--sky:#0ea5e9;--sky-d:#0369a1;--sky-l:#e0f2fe;--red:#ef4444;--green:#10b981;--green-d:#047857;--amber:#f59e0b;--amber-l:#fffbeb;--amber-d:#92400e}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP","Yu Gothic UI",Meiryo,sans-serif;line-height:1.7;font-size:16px}
+a{color:var(--sky-d)}
+.wrap{max-width:1040px;margin:0 auto;padding:16px}
+header{text-align:center;padding:12px 0 4px}
+.crumb{font-size:12px;color:var(--sub);text-align:left;margin:0 0 10px}
+.badge{display:inline-block;background:var(--amber-l);color:var(--amber-d);border:1px solid #fde68a;border-radius:999px;font-size:12px;font-weight:700;padding:2px 12px}
+h1{font-size:28px;line-height:1.3;margin:10px 0 6px;color:var(--ink);letter-spacing:-.01em}
+.lead{color:var(--sub);font-size:14px;margin:0 auto;max-width:36em}
+.grid{display:grid;gap:16px;margin-top:16px;grid-template-columns:minmax(0,1fr)}
+.grid>*{min-width:0}
+.card{background:var(--card);border:1px solid #eef2f7;border-radius:20px;padding:20px;box-shadow:0 1px 2px rgba(15,23,42,.04)}
+h2{font-size:18px;margin:0 0 12px;color:var(--ink);line-height:1.4}
+h3{font-size:15px;margin:18px 0 4px;color:var(--ink)}
+label,.lab{display:block;font-size:13px;font-weight:700;color:var(--sub);margin:0 0 6px}
+.field{margin-bottom:18px}
+.field:last-child{margin-bottom:0}
+input[type=number],select{width:100%;font:inherit;font-size:18px;font-weight:700;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:10px 12px;min-height:48px}
+input[type=number]:focus,select:focus,button:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid #7dd3fc;outline-offset:1px}
+input[type=range]{width:100%;accent-color:var(--sky);margin:10px 0 0;height:28px}
+.row{display:flex;gap:12px;align-items:center}
+.row input[type=number]{width:104px;flex:none}
+.row input[type=range]{margin:0}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.chip{font:inherit;font-size:13px;font-weight:700;color:var(--sky-d);background:var(--sky-l);border:1px solid #bae6fd;border-radius:999px;padding:6px 14px;min-height:36px;cursor:pointer}
+.chip[aria-pressed=true]{background:var(--sky);border-color:var(--sky);color:#fff}
+.hint{font-size:12px;color:var(--sub);margin:6px 0 0}
+.warn{font-size:12px;color:var(--amber-d);background:var(--amber-l);border-radius:10px;padding:8px 10px;margin:8px 0 0}
+[hidden]{display:none!important}
+.btn{font:inherit;font-weight:700;border:0;border-radius:12px;padding:12px 18px;min-height:48px;cursor:pointer}
+.btn-ghost{background:#f1f5f9;color:#334155}
+.btn-dark{background:var(--ink);color:#fff}
+.btn-line{background:#06c755;color:#fff}
+.btn-amber{background:var(--amber);color:#fff;white-space:nowrap}
+.hero{background:linear-gradient(135deg,#f0f9ff 0%,#ecfdf5 100%);border:2px solid #7dd3fc}
+.hero .cap{font-size:14px;font-weight:700;color:var(--sky-d);margin:0}
+.hero .big{font-size:44px;font-weight:800;line-height:1.15;color:var(--ink);margin:2px 0 4px;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.hero .big small{font-size:20px;font-weight:700;margin-left:2px}
+.hero .sub{font-size:13px;color:var(--sub);margin:0}
+.three{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
+.three div{background:#fff;border-radius:12px;padding:10px 8px;text-align:center;border:1px solid #e2e8f0}
+.three .k{font-size:11px;font-weight:700;margin:0}
+.three .v{font-size:16px;font-weight:800;color:var(--ink);margin:0;font-variant-numeric:tabular-nums;white-space:nowrap}
+.c-red{color:var(--red)}.c-sky{color:var(--sky-d)}.c-green{color:var(--green-d)}
+.kv{display:flex;justify-content:space-between;gap:12px;align-items:baseline;padding:10px 0;border-bottom:1px solid #f1f5f9;font-size:14px}
+.kv:last-child{border-bottom:0}
+.kv b{font-size:17px;color:var(--ink);font-variant-numeric:tabular-nums;white-space:nowrap}
+.kv b.plus{color:var(--green-d)}
+.tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table{width:100%;border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums}
+th,td{padding:10px 8px;text-align:right;border-bottom:1px solid #f1f5f9;white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+thead th{font-size:12px;color:var(--sub);background:var(--bg);font-weight:700}
+td.std{font-weight:800;color:var(--ink)}
+td small{display:block;font-size:11px;color:var(--sub);font-weight:400}
+.quick td a{display:block;font-weight:800;text-decoration:none;color:var(--sky-d)}
+.quick td a:hover{text-decoration:underline}
+#chart{width:100%;height:280px;display:block}
+.legend{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 16px;font-size:12px;font-weight:700;color:#475569;margin-top:6px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:20px;height:0;border-top:3px solid;display:inline-block}
+.future{background:var(--amber-l);border-color:#fde68a}
+.future h2{color:var(--amber-d)}
+.future .big{font-size:30px;font-weight:800;color:var(--amber-d);line-height:1.2;margin:4px 0;font-variant-numeric:tabular-nums}
+.future p{font-size:13px;color:#78350f;margin:4px 0 0}
+.rev{display:flex;gap:8px}
+.rev input{flex:1;min-width:0}
+.share{display:flex;flex-wrap:wrap;gap:8px}
+.share .btn{flex:1 1 140px}
+details{border-bottom:1px solid #f1f5f9;padding:4px 0}
+details:last-of-type{border-bottom:0}
+summary{cursor:pointer;font-weight:700;color:var(--ink);padding:10px 0;font-size:15px}
+details p{margin:0 0 12px;font-size:14px;color:#334155}
+.prose p,.prose li{font-size:14px;color:#334155}
+.prose ul{padding-left:1.2em;margin:8px 0}
+.facts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}
+.facts div{background:var(--bg);border-radius:12px;padding:10px 12px}
+.facts .k{font-size:11px;color:var(--sub);font-weight:700;margin:0}
+.facts .v{font-size:16px;font-weight:800;color:var(--ink);margin:0}
+.links{display:grid;gap:8px}
+.links a{display:block;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px 14px;text-decoration:none;color:var(--ink);font-weight:700;font-size:14px}
+.links a span{display:block;font-weight:400;font-size:12px;color:var(--sub)}
+.note{font-size:12px;color:var(--mute);margin:10px 0 0}
+.ad-box:empty{display:none}
+.ad-box{margin:16px auto;text-align:center}
+.ad-box::before{content:"PR：" attr(data-title);display:block;font-size:12px;color:#888;margin-bottom:6px}
+.pr{display:flex;flex-direction:column;align-items:center;margin:32px 0 16px}
+.pr p{font-size:12px;color:#888;margin:0 0 5px}
+footer{max-width:720px;margin:24px auto 0;padding-bottom:24px;font-size:12px;color:var(--sub)}
+footer p{margin:0 0 10px}
+footer b{color:#475569}
+@media (max-width:560px){
+  .card{padding:18px 14px}
+  th,td{padding:9px 4px;font-size:13px}
+  thead th{font-size:11px}
+  td small{font-size:10px;white-space:normal}
+  td:first-child,th:first-child{white-space:normal;padding-left:0}
+  td:last-child,th:last-child{padding-right:0}
+}
+@media (max-width:400px){
+  th,td{padding:9px 3px;font-size:12.5px}
+  .quick th:nth-child(2),.quick td:nth-child(2){display:none}
+}
+@media (min-width:900px){
+  .wrap{padding:32px}
+  h1{font-size:36px}
+  .cols{grid-template-columns:340px minmax(0,1fr);align-items:start}
+  .side{position:sticky;top:16px}
+  .hero .big{font-size:56px}
+  .two{grid-template-columns:repeat(2,minmax(0,1fr))}
+  #chart{height:340px}
+}
+</style>
+<!-- Google tag (GA4) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-40QSGNSQEL"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-40QSGNSQEL");</script>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+<p class="crumb"><a href="/">ちいさなツール工房</a> › <a href="/nisa-simulator/">NISA積立シミュレーター</a> › こどもNISA</p>
+<span class="badge">2027年1月スタートの新制度に対応</span>
+<h1>こどもNISAシミュレーター</h1>
+<p class="lead">子どもの年齢と毎月の積立額を入れると、12歳・15歳・18歳でいくらになるかを、悲観・標準・楽観の3パターンで試算します。</p>
+</header>
+
+<div class="grid cols">
+
+<!-- 入力 -->
+<div class="grid side">
+<section class="card" aria-labelledby="h-in">
+<h2 id="h-in">条件を入れる</h2>
+<div class="field">
+<label for="age">子どもの今の年齢</label>
+<select id="age"></select>
+</div>
+<div class="field">
+<label for="pmt">毎月の積立額（円）</label>
+<input type="number" id="pmt" value="10000" min="0" max="50000" step="1000" inputmode="numeric">
+<input type="range" id="pmtRange" min="0" max="50000" step="1000" value="10000" aria-label="毎月の積立額">
+<div class="chips" role="group" aria-label="積立額をえらぶ">
+<button type="button" class="chip" data-pmt="5000">5千円</button>
+<button type="button" class="chip" data-pmt="10000">1万円</button>
+<button type="button" class="chip" data-pmt="30000">3万円</button>
+<button type="button" class="chip" data-pmt="50000">5万円（上限）</button>
+</div>
+<p class="hint">こどもNISAは年60万円までなので、毎月なら5万円までです。</p>
+</div>
+<div class="field">
+<label for="rate">想定年利（%）※標準パターン</label>
+<div class="row">
+<input type="number" id="rate" value="5.0" min="0" max="15" step="0.1" inputmode="decimal">
+<input type="range" id="rateRange" min="0" max="10" step="0.1" value="5.0" aria-label="想定年利">
+</div>
+<p class="hint">悲観は−2%、楽観は+2%で自動計算します。</p>
+</div>
+<button type="button" class="btn btn-ghost" id="btnReset" style="width:100%">最初の条件にもどす</button>
+</section>
+
+<section class="card" aria-labelledby="h-rev" style="background:var(--amber-l);border-color:#fde68a">
+<h2 id="h-rev" style="color:var(--amber-d)">目標から毎月の額を逆算</h2>
+<p class="hint" style="margin:0 0 10px;color:#92400e">18歳のときにほしい金額を入れると、標準パターンで必要な毎月の積立額を自動で入れます。</p>
+<div class="rev">
+<input type="number" id="target" value="3000000" min="0" step="100000" inputmode="numeric" aria-label="18歳のときの目標金額（円）">
+<button type="button" class="btn btn-amber" id="btnRev">逆算</button>
+</div>
+<p class="warn" id="revMsg" hidden></p>
+</section>
+</div>
+
+<!-- 結果 -->
+<div class="grid">
+
+<section class="card hero" aria-live="polite">
+<p class="cap" id="heroCap">18歳のとき（標準パターン）</p>
+<p class="big" id="heroBig"></p>
+<p class="sub" id="heroSub"></p>
+<div class="three">
+<div><p class="k c-red">悲観 <span id="loR"></span></p><p class="v" id="lo"></p></div>
+<div><p class="k c-sky">標準 <span id="miR"></span></p><p class="v" id="mi"></p></div>
+<div><p class="k c-green">楽観 <span id="hiR"></span></p><p class="v" id="hi"></p></div>
+</div>
+<p class="warn" id="capMsg" hidden></p>
+</section>
+
+<div class="grid two">
+<section class="card" aria-labelledby="h-kv">
+<h2 id="h-kv">内訳（標準パターン）</h2>
+<div class="kv"><span>積み立てた元本</span><b id="kPrin"></b></div>
+<div class="kv"><span>運用で増えた分</span><b id="kGain" class="plus"></b></div>
+<div class="kv"><span>非課税で得する額</span><b id="kTax" class="plus"></b></div>
+<p class="note">「得する額」は、同じ運用を課税口座でした場合に、運用益にかかる税金（20.315%）です。</p>
+</section>
+
+<section class="card future" aria-labelledby="h-fu">
+<h2 id="h-fu">そのまま65歳まで置いておくと</h2>
+<p class="big" id="fuBig"></p>
+<p id="fuSub"></p>
+<p>18歳で大人のNISAに引き継いだあと、1円も足さずに運用だけ続けた場合の試算です。物価が上がる分は考えていないので、今のお金の価値とはちがいます。</p>
+</section>
+</div>
+
+<section class="card" aria-labelledby="h-ms">
+<h2 id="h-ms">年齢ごとの金額</h2>
+<div class="tbl-wrap">
+<table>
+<thead><tr><th>年齢</th><th>元本</th><th class="c-red">悲観</th><th class="c-sky">標準</th><th class="c-green">楽観</th></tr></thead>
+<tbody id="msBody"></tbody>
+</table>
+</div>
+<p class="note">12歳からは、条件つきで引き出せるようになります（くわしくは下の説明へ）。</p>
+<details>
+<summary>1年ごとの表を見る</summary>
+<div class="tbl-wrap">
+<table>
+<thead><tr><th>年齢</th><th>元本</th><th class="c-red">悲観</th><th class="c-sky">標準</th><th class="c-green">楽観</th></tr></thead>
+<tbody id="yrBody"></tbody>
+</table>
+</div>
+</details>
+</section>
+
+<section class="card" aria-labelledby="h-ch">
+<h2 id="h-ch">増え方のグラフ</h2>
+<svg id="chart" role="img" aria-label="年齢ごとの資産額のグラフ"></svg>
+<div class="legend">
+<span><i style="border-color:#94a3b8;border-top-style:dashed"></i>元本</span>
+<span><i style="border-color:#ef4444"></i>悲観</span>
+<span><i style="border-color:#0ea5e9"></i>標準</span>
+<span><i style="border-color:#10b981"></i>楽観</span>
+</div>
+</section>
+
+<section class="card" aria-labelledby="h-sh">
+<h2 id="h-sh">この結果を共有する</h2>
+<div class="share">
+<button type="button" class="btn btn-dark" id="btnX">Xに投稿</button>
+<button type="button" class="btn btn-line" id="btnLine">LINEで送る</button>
+<button type="button" class="btn btn-ghost" id="btnCopy">リンクをコピー</button>
+<button type="button" class="btn btn-ghost" id="btnNative" hidden>ほかのアプリで共有</button>
+</div>
+<p class="note">共有されるのは、リンクと、入れた条件（年齢・積立額・年利）だけです。夫婦で相談するときに、LINEで送ると便利です。</p>
+</section>
+
+</div>
+</div>
+
+<div class="ad-box" data-title="子どものお金の相談"></div>
+
+<section class="card" style="margin-top:16px" aria-labelledby="h-q">
+<h2 id="h-q">早見表：0歳から始めると、18歳でいくら？</h2>
+<p class="hint" style="margin:0 0 10px">金額を押すと、その条件で上のシミュレーターが動きます。</p>
+<div class="tbl-wrap">
+<table class="quick">
+<thead><tr><th>毎月の積立額</th><th>元本</th><th>年利3%</th><th>年利5%</th><th>年利7%</th></tr></thead>
+<tbody>
+<!--QUICK-->
+<tr><td>月5千円</td><td>108万円</td><td><a href="?age=0&amp;pmt=5000&amp;rate=3">143万円</a></td><td><a href="?age=0&amp;pmt=5000&amp;rate=5">175万円</a></td><td><a href="?age=0&amp;pmt=5000&amp;rate=7">215万円</a></td></tr>
+<tr><td>月1万円</td><td>216万円</td><td><a href="?age=0&amp;pmt=10000&amp;rate=3">286万円</a></td><td><a href="?age=0&amp;pmt=10000&amp;rate=5">349万円</a></td><td><a href="?age=0&amp;pmt=10000&amp;rate=7">431万円</a></td></tr>
+<tr><td>月2万円</td><td>432万円</td><td><a href="?age=0&amp;pmt=20000&amp;rate=3">572万円</a></td><td><a href="?age=0&amp;pmt=20000&amp;rate=5">698万円</a></td><td><a href="?age=0&amp;pmt=20000&amp;rate=7">861万円</a></td></tr>
+<tr><td>月3万円</td><td>600万円</td><td><a href="?age=0&amp;pmt=30000&amp;rate=3">809万円</a></td><td><a href="?age=0&amp;pmt=30000&amp;rate=5">998万円</a></td><td><a href="?age=0&amp;pmt=30000&amp;rate=7">1,242万円</a></td></tr>
+<tr><td>月5万円</td><td>600万円</td><td><a href="?age=0&amp;pmt=50000&amp;rate=3">888万円</a></td><td><a href="?age=0&amp;pmt=50000&amp;rate=5">1,157万円</a></td><td><a href="?age=0&amp;pmt=50000&amp;rate=7">1,513万円</a></td></tr>
+</tbody>
+</table>
+</div>
+<p class="note">0歳から18歳になるまでの18年間、毎月積み立てた場合の試算です。月5万円のときは、10年で元本が上限の600万円になるので、そのあとは運用だけを続ける計算です。</p>
+</section>
+
+<div class="grid two" style="margin-top:16px">
+<section class="card prose" aria-labelledby="h-ab">
+<h2 id="h-ab">こどもNISAとは</h2>
+<p>2027年1月から、NISAの「つみたて投資枠」の年齢の条件がなくなり、0〜17歳の子どもも口座を作れるようになります。これが「こどもNISA」と呼ばれている制度です。</p>
+<div class="facts">
+<div><p class="k">始まる時期</p><p class="v">2027年1月</p></div>
+<div><p class="k">対象</p><p class="v">0〜17歳</p></div>
+<div><p class="k">1年に投資できる額</p><p class="v">60万円</p></div>
+<div><p class="k">非課税で持てる上限</p><p class="v">600万円</p></div>
+</div>
+<ul>
+<li>使えるのは「つみたて投資枠」だけです。買えるのは、国の基準を満たした投資信託です（個別の株は買えません）。</li>
+<li>0〜17歳の間は、原則として引き出せません。</li>
+<li>12歳からは、子どものために使うこと、子ども本人が同意した書面があることなどの条件を満たせば、引き出せます。</li>
+<li>0〜17歳の間は、金融機関を変えられません。</li>
+<li>18歳になる年の1月1日に、大人のNISA口座へ自動で引き継がれます。</li>
+</ul>
+<p class="note">2026年11月時点で公表されている内容です。最新の情報は、<a href="https://www.fsa.go.jp/policy/nisa2/know/index.html" target="_blank" rel="noopener">金融庁のNISA特設サイト</a>や、口座を作る金融機関で確認してください。</p>
+</section>
+
+<section class="card" aria-labelledby="h-faq">
+<h2 id="h-faq">よくある質問</h2>
+<details>
+<summary>いつから始められますか？</summary>
+<p>制度が始まるのは2027年1月です。口座開設の受付を始める時期は金融機関によってちがうので、使いたい金融機関のお知らせを確認してください。</p>
+</details>
+<details>
+<summary>毎月いくらまで積み立てられますか？</summary>
+<p>1年に60万円までです。毎月同じ額なら、月5万円までが目安です。元本の合計が600万円になると、それ以上は積み立てられません。月5万円なら、10年で上限になります。</p>
+</details>
+<details>
+<summary>途中で引き出せますか？</summary>
+<p>0〜17歳の間は、原則として引き出せません（災害などのやむを得ない場合をのぞく）。12歳からは、子どものために使うお金であること、子ども本人が同意した書面があること、親などの口座管理者が申出書を出すこと、という条件を満たせば引き出せます。中学や高校の入学には使えますが、小学校までの費用には使いにくい点に注意してください。</p>
+</details>
+<details>
+<summary>18歳になったらどうなりますか？</summary>
+<p>18歳になる年の1月1日に、大人のNISA口座へ自動で引き継がれます。それまでの分は、そのまま非課税で持ち続けられます。このツールでは、計算をかんたんにするために「18歳になるまで積み立てる」前提にしています。</p>
+</details>
+<details>
+<summary>祖父母がお金を出してもいいですか？</summary>
+<p>出すことはできますが、贈与税に注意が必要です。贈与税がかからない枠（年110万円）は、子ども1人が1年間に受け取った合計で考えます。くわしくは、税務署や税理士に確認してください。</p>
+</details>
+<details>
+<summary>親のNISAと、どちらを先に使うべきですか？</summary>
+<p>こどもNISAは17歳まで原則引き出せません（12歳から条件つき）。親のNISAはいつでも引き出せます。「すぐ使うかもしれないお金」は親のNISA、「大学まで使わないと決めたお金」はこどもNISA、という分け方がひとつの目安です。親のNISAの試算は<a href="/nisa-simulator/">NISA積立シミュレーター</a>でできます。</p>
+</details>
+<details>
+<summary>計算はどうやっていますか？</summary>
+<p>毎月、残高に利回り（年利÷12）を加えてから、月末に積立額を足す複利計算です。元本が600万円になったら積立を止めて、運用だけを続けます。悲観・標準・楽観は、入力した年利の−2%・そのまま・+2%です。</p>
+</details>
+</section>
+</div>
+
+<section class="card" style="margin-top:16px" aria-labelledby="h-rel">
+<h2 id="h-rel">あわせて使えるツール</h2>
+<div class="links two grid" style="margin:0">
+<a href="/nisa-simulator/">NISA積立シミュレーター<span>親のNISAはこちら。取り崩すと何年もつかも計算できます</span></a>
+<a href="/furusato-limit/">ふるさと納税 上限額シミュレーター<span>年末までに、今年の上限額を確認</span></a>
+<a href="/nenshu-kabe-simulator/">年収の壁 手取りシミュレーター<span>パートの手取りと、損する年収帯がわかります</span></a>
+<a href="/kids-drill/">こどもドリルらんど<span>たしざん・ひらがなの無料ドリル</span></a>
+</div>
+</section>
+
+<section class="card" style="margin-top:16px" aria-labelledby="h-about">
+<h2 id="h-about">このツールについて</h2>
+<p style="font-size:14px;margin:0 0 12px">作った経緯や使い方は、noteに書いています。「ここが動かない」「こんな機能がほしい」があれば、記事のコメントで教えてください。</p>
+<!-- note記事のURL（記事を公開したら張り替え） -->
+<a id="noteLink" href="https://note.com/zero_kobo" target="_blank" rel="noopener" class="btn" style="display:inline-block;background:#10b981;color:#fff;text-decoration:none">noteの記事を読む</a>
+<p class="note">本ツールは、2026年11月時点で公表されている制度の内容（2027年1月開始・年間投資枠60万円・非課税保有限度額600万円・税率20.315%）をもとに、毎年同じ利回りが続くと仮定した試算です。将来の運用成果を保証するものではありません。実際の相場は毎年上下し、元本を下回ることもあります。手数料、インフレ、制度の変更は考慮していません。投資の判断はご自身でお願いします。本ページには広告（アフィリエイトリンク）を含みます。</p>
+</section>
+
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const CAP = 6000000, MAXP = 50000, TAX = 0.20315, SPREAD = 2, GOAL = 18, OLD = 65;
+const DEF = {age: 0, pmt: 10000, rate: 5};
+const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
+const man = n => {
+  const v = Math.round(n/10000), oku = Math.floor(v/10000), rest = v % 10000;
+  return oku ? `${oku}億${rest ? rest.toLocaleString('ja-JP')+'万' : ''}円` : v.toLocaleString('ja-JP') + '万円';
+};
+let last = {};
+
+// 毎月：残高に利回りを加える → 月末に積立。元本が600万円になったら積立を止める
+const sim = (age, pmt, rate) => {
+  const r = rate/100/12, n = (GOAL-age)*12;
+  let v = 0, p = 0, capAge = null;
+  const V = [0], P = [0];
+  for (let m = 1; m <= n; m++) {
+    v *= 1+r;
+    const add = Math.min(pmt, CAP-p);
+    v += add; p += add;
+    if (capAge === null && pmt > 0 && p >= CAP) capAge = age + Math.floor(m/12);
+    if (m % 12 === 0) { V.push(v); P.push(p); }
+  }
+  return {V, P, v, p, capAge};
+};
+// 18歳以降、積立なしで運用だけ続けた場合
+const hold = (v, rate, years) => v * Math.pow(1 + rate/100/12, years*12);
+// 目標額から毎月の積立額を逆算（標準パターン）。届かないときは null
+const reverse = (age, rate, target) => {
+  if (sim(age, MAXP, rate).v < target) return null;
+  let lo = 0, hi = MAXP;
+  for (let i = 0; i < 40; i++) { const mid = (lo+hi)/2; if (sim(age, mid, rate).v >= target) hi = mid; else lo = mid; }
+  return Math.min(MAXP, Math.ceil(hi/1000)*1000);
+};
+
+const read = () => ({
+  age: clamp(parseInt($('age').value)||0, 0, GOAL-1),
+  pmt: clamp(parseFloat($('pmt').value)||0, 0, MAXP),
+  rate: clamp(parseFloat($('rate').value)||0, 0, 15)
+});
+
+const drawChart = (age, S) => {
+  const svg = $('chart'), W = Math.max(280, svg.clientWidth||600), H = svg.clientHeight||280;
+  const L = 52, R = 12, T = 14, B = 30, n = GOAL-age;
+  const max = Math.max(1, ...S[3].V), step = (() => { const raw = max/4, p = Math.pow(10, Math.floor(Math.log10(raw))); const f = raw/p; return (f<=1?1:f<=2?2:f<=5?5:10)*p; })();
+  const top = Math.ceil(max/step)*step;
+  const X = i => L + (W-L-R) * (n ? i/n : 0), Y = v => T + (H-T-B) * (1 - v/top);
+  let h = '';
+  for (let t = 0; t <= top + 1; t += step) {
+    h += `<line x1="${L}" x2="${W-R}" y1="${Y(t)}" y2="${Y(t)}" stroke="#eef2f7"/>`;
+    h += `<text x="${L-6}" y="${Y(t)+4}" text-anchor="end" font-size="11" fill="#64748b">${t ? Math.round(t/10000).toLocaleString('ja-JP')+'万' : '0'}</text>`;
+  }
+  const every = n > 12 ? 3 : n > 6 ? 2 : 1;
+  for (let i = 0; i <= n; i++) if (i === n || (i % every === 0 && n - i >= every)) h += `<text x="${X(i)}" y="${H-8}" text-anchor="middle" font-size="11" fill="#64748b">${age+i}歳</text>`;
+  if (age < 12) h += `<line x1="${X(12-age)}" x2="${X(12-age)}" y1="${T}" y2="${H-B}" stroke="#f59e0b" stroke-dasharray="4 4"/><text x="${X(12-age)-5}" y="${T+10}" text-anchor="end" font-size="11" font-weight="700" fill="#b45309">12歳〜 引き出し可</text>`;
+  const path = a => a.map((v, i) => (i ? 'L' : 'M') + X(i).toFixed(1) + ' ' + Y(v).toFixed(1)).join('');
+  h += `<path d="${path(S[0].P)}" fill="none" stroke="#94a3b8" stroke-width="2" stroke-dasharray="6 4"/>`;
+  [['#ef4444', 1, 2], ['#10b981', 3, 2], ['#0ea5e9', 2, 3.5]].forEach(([c, k, w]) => h += `<path d="${path(S[k].V)}" fill="none" stroke="${c}" stroke-width="${w}" stroke-linejoin="round" stroke-linecap="round"/>`);
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  svg.innerHTML = h;
+};
+
+const calc = () => {
+  const {age, pmt, rate} = read();
+  const lo = Math.max(0, rate-SPREAD), hi = rate+SPREAD, n = GOAL-age;
+  const Lo = sim(age, pmt, lo), Mi = sim(age, pmt, rate), Hi = sim(age, pmt, hi);
+  const gain = Math.max(0, Mi.v - Mi.p);
+
+  $('heroCap').textContent = `${age}歳から毎月${pmt.toLocaleString('ja-JP')}円 → 18歳のとき（標準パターン）`;
+  $('heroBig').innerHTML = Mi.v < 99995000 ? `約${Math.round(Mi.v/10000).toLocaleString('ja-JP')}<small>万円</small>` : '約' + man(Mi.v);
+  $('heroSub').textContent = `積立期間 ${n}年・元本 ${man(Mi.p)}・増えた分 +${man(gain)}`;
+  $('lo').textContent = man(Lo.v); $('mi').textContent = man(Mi.v); $('hi').textContent = man(Hi.v);
+  $('loR').textContent = lo.toFixed(1)+'%'; $('miR').textContent = rate.toFixed(1)+'%'; $('hiR').textContent = hi.toFixed(1)+'%';
+  const capMsg = $('capMsg');
+  if (Mi.capAge !== null && Mi.capAge < GOAL) { capMsg.hidden = false; capMsg.textContent = `${Mi.capAge}歳で、元本が上限の600万円になります。そのあとは積立を止めて、運用だけを続ける計算です。`; }
+  else capMsg.hidden = true;
+
+  $('kPrin').textContent = man(Mi.p); $('kGain').textContent = '+' + man(gain); $('kTax').textContent = '+' + man(gain*TAX);
+
+  const fMi = hold(Mi.v, rate, OLD-GOAL);
+  $('fuBig').textContent = '約' + man(fMi);
+  $('fuSub').textContent = `悲観 ${man(hold(Lo.v, lo, OLD-GOAL))} ／ 楽観 ${man(hold(Hi.v, hi, OLD-GOAL))}（元本は${man(Mi.p)}のまま）`;
+
+  const row = (i, label) => `<tr><td>${label}</td><td>${man(Mi.P[i])}</td><td>${man(Lo.V[i])}</td><td class="std">${man(Mi.V[i])}</td><td>${man(Hi.V[i])}</td></tr>`;
+  const MS = [[12, '中学入学のころ'], [15, '高校入学のころ'], [18, '大学入学のころ']];
+  $('msBody').innerHTML = MS.filter(([a]) => a > age).map(([a, t]) => row(a-age, `${a}歳<small>${t}</small>`)).join('');
+  let yr = ''; for (let i = 1; i <= n; i++) yr += row(i, `${age+i}歳`);
+  $('yrBody').innerHTML = yr;
+
+  drawChart(age, [Mi, Lo, Mi, Hi]);
+  document.querySelectorAll('.chip').forEach(b => b.setAttribute('aria-pressed', +b.dataset.pmt === pmt));
+  last = {age, pmt, rate, total: Mi.v};
+};
+
+const shareUrl = () => location.origin + location.pathname + '?' + new URLSearchParams({age: last.age, pmt: last.pmt, rate: last.rate}).toString();
+const shareText = () => `こどもNISAで${last.age}歳から毎月${last.pmt.toLocaleString('ja-JP')}円つみたてると、18歳で約${man(last.total)}（年利${last.rate}%の試算）`;
+const setPmt = v => { $('pmt').value = v; $('pmtRange').value = v; };
+const setRate = v => { $('rate').value = v; $('rateRange').value = Math.min(10, v); };
+
+window.addEventListener('DOMContentLoaded', () => {
+  let opt = ''; for (let a = 0; a < GOAL; a++) opt += `<option value="${a}">${a}歳${a === 0 ? '（これから生まれる子も）' : ''}</option>`;
+  $('age').innerHTML = opt;
+  const qs = new URLSearchParams(location.search);
+  const num = k => qs.has(k) && !isNaN(parseFloat(qs.get(k))) ? parseFloat(qs.get(k)) : null;
+  $('age').value = clamp(Math.round(num('age') ?? DEF.age), 0, GOAL-1);
+  setPmt(clamp(num('pmt') ?? DEF.pmt, 0, MAXP));
+  setRate(clamp(num('rate') ?? DEF.rate, 0, 15));
+
+  $('age').addEventListener('change', calc);
+  $('pmt').addEventListener('input', () => { $('pmtRange').value = $('pmt').value; calc(); });
+  $('pmt').addEventListener('change', () => { setPmt(clamp(parseFloat($('pmt').value)||0, 0, MAXP)); calc(); });
+  $('pmtRange').addEventListener('input', () => { $('pmt').value = $('pmtRange').value; calc(); });
+  $('rate').addEventListener('input', () => { $('rateRange').value = $('rate').value; calc(); });
+  $('rateRange').addEventListener('input', () => { $('rate').value = $('rateRange').value; calc(); });
+  document.querySelectorAll('.chip').forEach(b => b.addEventListener('click', () => { setPmt(b.dataset.pmt); calc(); }));
+  $('btnReset').addEventListener('click', () => {
+    $('age').value = DEF.age; setPmt(DEF.pmt); setRate(DEF.rate); $('target').value = 3000000; $('revMsg').hidden = true;
+    history.replaceState(null, '', location.pathname); calc();
+  });
+  $('btnRev').addEventListener('click', () => {
+    const {age, rate} = read(), target = Math.max(0, parseFloat($('target').value)||0), msg = $('revMsg');
+    const need = reverse(age, rate, target);
+    msg.hidden = false;
+    if (need === null) { setPmt(MAXP); msg.textContent = `上限の月5万円で積み立てても、18歳のときは約${man(sim(age, MAXP, rate).v)}で、目標には届きません。足りない分は、親のNISAなどと合わせて考えてみてください。`; }
+    else { setPmt(need); msg.textContent = `毎月${need.toLocaleString('ja-JP')}円で、目標に届く計算です（千円単位に切り上げ）。`; }
+    calc();
+  });
+  $('btnX').addEventListener('click', () => window.open('https://x.com/intent/post?text=' + encodeURIComponent(shareText() + '\n#こどもNISA #ちいさなツール工房\n※ページ内に広告あり') + '&url=' + encodeURIComponent(shareUrl()), '_blank', 'noopener'));
+  $('btnLine').addEventListener('click', () => window.open('https://social-plugins.line.me/lineit/share?url=' + encodeURIComponent(shareUrl()) + '&text=' + encodeURIComponent(shareText()), '_blank', 'noopener'));
+  $('btnCopy').addEventListener('click', async () => {
+    try { await navigator.clipboard.writeText(shareUrl()); $('btnCopy').textContent = 'コピーしました'; }
+    catch (e) { $('btnCopy').textContent = 'コピーできませんでした'; }
+    setTimeout(() => $('btnCopy').textContent = 'リンクをコピー', 2000);
+  });
+  if (navigator.share) {
+    $('btnNative').hidden = false;
+    $('btnNative').addEventListener('click', () => navigator.share({title: document.title, text: shareText(), url: shareUrl()}).catch(() => {}));
+  }
+  document.querySelectorAll('.quick a').forEach(a => a.addEventListener('click', e => {
+    e.preventDefault();
+    const q = new URLSearchParams(a.search);
+    $('age').value = q.get('age'); setPmt(q.get('pmt')); setRate(q.get('rate'));
+    calc(); document.querySelector('.hero').scrollIntoView({behavior: 'smooth', block: 'center'});
+  }));
+  let t; window.addEventListener('resize', () => { clearTimeout(t); t = setTimeout(calc, 150); });
+  calc();
+});
+</script>
+
+<!-- 広告エリア -->
+<div class="pr">
+<p>※PR</p>
+<script type="text/javascript">rakuten_design="slide";rakuten_affiliateId="1713d060.335a82be.1713d061.5d5faf0d";rakuten_items="ctsmatch";rakuten_genreId="0";rakuten_size="320x48";rakuten_target="_blank";rakuten_theme="gray";rakuten_border="off";rakuten_auto_mode="on";rakuten_genre_title="off";rakuten_recommend="on";rakuten_ts="1790656798017";</script>
+<script type="text/javascript" src="https://xml.affiliate.rakuten.co.jp/widget/js/rakuten_widget.js?20230106"></script>
+</div>
+
+<footer>
+<p><b>運営者：</b>ちいさなツール工房（<a href="https://note.com/zero_kobo" target="_blank" rel="noopener">note</a>／<a href="https://x.com/zero_kobo_" target="_blank" rel="noopener">X</a>）。お問い合わせは、noteの記事のコメント欄へどうぞ。</p>
+<p><b>広告について：</b>このページには、楽天アフィリエイトなどの広告（PR）を含みます。リンクからお買い物があると、運営者に紹介料が入ることがあります。</p>
+<p><b>プライバシーポリシー：</b>アクセス状況を知るために、Googleアナリティクス（GA4）を使っています。GA4はCookieを使って、個人を特定しない形でアクセス情報を集めます。入力した年齢や金額は、ブラウザの中だけで計算し、こちらに送られることはありません（共有ボタンを押した場合は、その条件がリンクに含まれます）。データ収集を止めたい場合は、ブラウザのCookieを無効にするか、<a href="https://tools.google.com/dlpage/gaoptout?hl=ja" target="_blank" rel="noopener">Googleアナリティクス オプトアウト アドオン</a>をご利用ください。</p>
+<p><b>免責事項：</b>計算結果は概算です。実際の運用成果や税金とは異なることがあります。制度の最新情報は、金融庁などの公式情報で確認してください。</p>
+<p>最終更新日：2026年11月10日</p>
+</footer>
+
+</body>
+</html>

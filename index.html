@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="google-site-verification" content="Rj3mWzplrv9xBEGa_NL3Vwb5G_eaeUphb7fIzfMr77w" />
 <title>NISA積立シミュレーター｜取り崩し・通常口座との比較・3パターン試算</title>
-<meta name="description" content="毎月の積立額・年利・期間を入力すると、悲観・標準・楽観の3パターンで将来の資産額を試算。積み立てた後に毎月取り崩すと何年もつか、課税口座と比べたNISAの節税額も分かります。無料・登録不要。">
+<meta name="description" content="毎月の積立額・年利・期間を入力すると、悲観・標準・楽観の3パターンで将来の資産額を試算。積み立てた後に毎月取り崩すと何年もつか、課税口座と比べたNISAの節税額も分かります。月1万・3万・5万円の早見表つき。無料・登録不要。">
 <link rel="canonical" href="https://zero-kobo.github.io/nisa-simulator/">
 <meta property="og:title" content="NISA積立シミュレーター｜取り崩し・通常口座との比較・3パターン試算">
 <meta property="og:description" content="積み立てたお金は何年もつ？悲観・標準・楽観の3パターンで、積立から取り崩しまで一度に確認できます。">
@@ -20,17 +20,73 @@
 <meta name="twitter:image" content="https://zero-kobo.github.io/nisa-simulator/ogp.png">
 <script type="application/ld+json">
 {
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "NISA積立シミュレーター",
-  "url": "https://zero-kobo.github.io/nisa-simulator/",
-  "description": "NISAの積立額・年利・期間から将来の資産額を3パターンで試算し、積立後に取り崩すと何年もつか、課税口座との差も確認できる無料ツール。",
-  "applicationCategory": "FinanceApplication",
-  "operatingSystem": "Web",
-  "inLanguage": "ja",
-  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "JPY"},
-  "publisher": {"@type": "Organization", "name": "ちいさなツール工房"},
-  "dateModified": "2026-10-22"
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "WebApplication",
+   "name": "NISA積立シミュレーター",
+   "url": "https://zero-kobo.github.io/nisa-simulator/",
+   "description": "NISAの積立額・年利・期間から将来の資産額を3パターンで試算し、積立後に取り崩すと何年もつか、課税口座との差も確認できる無料ツール。",
+   "applicationCategory": "FinanceApplication",
+   "operatingSystem": "Web",
+   "inLanguage": "ja",
+   "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "JPY"
+   },
+   "publisher": {
+    "@type": "Organization",
+    "name": "ちいさなツール工房"
+   },
+   "dateModified": "2026-11-10"
+  },
+  {
+   "@type": "FAQPage",
+   "mainEntity": [
+    {
+     "@type": "Question",
+     "name": "新NISAの非課税枠はいくらですか？",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "年間の投資枠は、つみたて投資枠が120万円、成長投資枠が240万円で、合計360万円（月30万円）です。生涯の非課税保有限度額は1,800万円です。"
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "NISAで毎月3万円を20年積み立てるといくらになりますか？",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "年利5%で運用できた場合、元本720万円に対して約1,233万円になる試算です。年利3%なら約985万円です。将来の利回りは分からないので、悲観・標準・楽観の幅で見るのがおすすめです。"
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "利回りは何％で計算すればいいですか？",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "将来の利回りは誰にも分かりません。1つの数字で決めず、悲観・標準・楽観の幅で見るのがおすすめです。このツールは、入力した年利の−2%・そのまま・+2%の3パターンを同時に表示します。"
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "NISAで積み立てたお金を取り崩すと、税金はかかりますか？",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "NISAの中のお金は、売却しても税金がかかりません。枠を超えて課税口座で運用した分は、運用益に20.315%の税金がかかります。"
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "子どもの分のNISAは計算できますか？",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "2027年1月に始まるこどもNISA（0〜17歳・年60万円・上限600万円）は、専用の「こどもNISAシミュレーター」で計算できます。"
+     }
+    }
+   ]
+  }
+ ]
 }
 </script>
 <script src="https://cdn.tailwindcss.com"></script>
@@ -52,6 +108,11 @@ input[type=range]{accent-color:#0ea5e9}
 <h1 class="text-3xl md:text-4xl font-bold text-slate-900 tracking-tight">NISA積立シミュレーター</h1>
 <p class="text-slate-500 mt-2">毎月の積立額を入力すると、悲観・標準・楽観の3パターンで将来の資産額を試算します。<br class="hidden sm:inline">積み立てた後に<a href="#withdraw" class="text-sky-600 underline">取り崩すと何年もつか</a>も分かります。</p>
 </header>
+
+<a href="kodomo/" class="block bg-amber-50 border border-amber-200 rounded-2xl p-4 text-amber-900 hover:bg-amber-100 max-w-3xl mx-auto">
+<span class="text-[10px] font-bold bg-rose-500 text-white rounded-full px-2 py-0.5 mr-1 align-middle">NEW</span><span class="font-bold align-middle">こどもNISAシミュレーターができました</span>
+<span class="block text-sm mt-1">2027年1月スタートの新制度。0歳から月1万円で、18歳にいくらになる？　試算する →</span>
+</a>
 
 <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
@@ -141,7 +202,9 @@ input[type=range]{accent-color:#0ea5e9}
 <h2 class="text-base font-bold mb-3">この結果を共有する</h2>
 <div class="flex flex-wrap gap-3">
 <button id="btnX" class="bg-slate-900 text-white font-bold py-3 px-6 rounded-xl">Xに投稿する</button>
+<button id="btnLine" class="text-white font-bold py-3 px-6 rounded-xl" style="background:#06c755">LINEで送る</button>
 <button id="btnCopy" class="bg-slate-100 text-slate-700 font-bold py-3 px-6 rounded-xl">条件つきリンクをコピー</button>
+<button id="btnNative" class="bg-slate-100 text-slate-700 font-bold py-3 px-6 rounded-xl hidden">ほかのアプリで共有</button>
 </div>
 <p class="text-xs text-slate-400 mt-3">条件つきリンクには、入力した積立・取り崩しの条件が含まれます（年齢を入れた場合は年齢も）。</p>
 </div>
@@ -247,6 +310,36 @@ input[type=range]{accent-color:#0ea5e9}
 </div>
 </section>
 
+<!-- 早見表 -->
+<section id="quick" class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 scroll-mt-4">
+<h2 class="text-lg font-bold text-slate-900 mb-1">早見表：毎月の積立額と年数で、いくらになる？</h2>
+<p class="text-sm text-slate-500 mb-4">年利5%で運用できた場合の試算です（カッコ内は年利3%の場合）。金額を押すと、その条件で上のシミュレーターが動きます。</p>
+<div class="overflow-x-auto">
+<table class="min-w-full text-right text-sm whitespace-nowrap">
+<thead class="bg-slate-50"><tr><th class="py-3 px-3 font-bold text-slate-600 text-left">毎月の積立額</th><th class="py-3 px-3 font-bold text-slate-600">10年</th><th class="py-3 px-3 font-bold text-slate-600">20年</th><th class="py-3 px-3 font-bold text-slate-600">30年</th></tr></thead>
+<tbody class="divide-y divide-slate-100">
+<!--QUICK-->
+<tr><td class="py-3 px-3 text-left font-medium">月1万円</td><td class="py-3 px-3"><a href="?pmt=10000&amp;years=10&amp;rate=5" class="font-bold text-sky-700 underline">155万円</a><span class="block text-xs text-slate-400">（140万円）</span></td><td class="py-3 px-3"><a href="?pmt=10000&amp;years=20&amp;rate=5" class="font-bold text-sky-700 underline">411万円</a><span class="block text-xs text-slate-400">（328万円）</span></td><td class="py-3 px-3"><a href="?pmt=10000&amp;years=30&amp;rate=5" class="font-bold text-sky-700 underline">832万円</a><span class="block text-xs text-slate-400">（583万円）</span></td></tr>
+<tr><td class="py-3 px-3 text-left font-medium">月3万円</td><td class="py-3 px-3"><a href="?pmt=30000&amp;years=10&amp;rate=5" class="font-bold text-sky-700 underline">466万円</a><span class="block text-xs text-slate-400">（419万円）</span></td><td class="py-3 px-3"><a href="?pmt=30000&amp;years=20&amp;rate=5" class="font-bold text-sky-700 underline">1,233万円</a><span class="block text-xs text-slate-400">（985万円）</span></td><td class="py-3 px-3"><a href="?pmt=30000&amp;years=30&amp;rate=5" class="font-bold text-sky-700 underline">2,497万円</a><span class="block text-xs text-slate-400">（1,748万円）</span></td></tr>
+<tr><td class="py-3 px-3 text-left font-medium">月5万円</td><td class="py-3 px-3"><a href="?pmt=50000&amp;years=10&amp;rate=5" class="font-bold text-sky-700 underline">776万円</a><span class="block text-xs text-slate-400">（699万円）</span></td><td class="py-3 px-3"><a href="?pmt=50000&amp;years=20&amp;rate=5" class="font-bold text-sky-700 underline">2,055万円</a><span class="block text-xs text-slate-400">（1,642万円）</span></td><td class="py-3 px-3"><a href="?pmt=50000&amp;years=30&amp;rate=5" class="font-bold text-sky-700 underline">4,161万円</a><span class="block text-xs text-slate-400">（2,914万円）</span></td></tr>
+<tr><td class="py-3 px-3 text-left font-medium">月10万円</td><td class="py-3 px-3"><a href="?pmt=100000&amp;years=10&amp;rate=5" class="font-bold text-sky-700 underline">1,553万円</a><span class="block text-xs text-slate-400">（1,397万円）</span></td><td class="py-3 px-3"><a href="?pmt=100000&amp;years=20&amp;rate=5" class="font-bold text-sky-700 underline">4,110万円</a><span class="block text-xs text-slate-400">（3,283万円）</span></td><td class="py-3 px-3"><a href="?pmt=100000&amp;years=30&amp;rate=5" class="font-bold text-sky-700 underline">8,323万円</a><span class="block text-xs text-slate-400">（5,827万円）</span></td></tr>
+</tbody>
+</table>
+</div>
+<p class="text-xs text-slate-400 mt-3">初期投資0円、毎月末に積み立てた場合の税引き前の資産額です。月10万円×30年は元本が3,600万円になり、生涯の非課税枠（1,800万円）を超えるので、超えた分は課税口座で運用した前提です。</p>
+</section>
+
+<!-- 関連ツール -->
+<section class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
+<h2 class="text-lg font-bold text-slate-900 mb-3">あわせて使えるツール</h2>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+<a href="kodomo/" class="block bg-slate-50 border border-slate-200 rounded-xl p-4 font-bold text-slate-800 hover:bg-slate-100">こどもNISAシミュレーター<span class="block font-normal text-xs text-slate-500 mt-1">0歳から月1万円で、18歳にいくら？（2027年開始）</span></a>
+<a href="/furusato-limit/" class="block bg-slate-50 border border-slate-200 rounded-xl p-4 font-bold text-slate-800 hover:bg-slate-100">ふるさと納税 上限額シミュレーター<span class="block font-normal text-xs text-slate-500 mt-1">年末までに、今年の上限額を確認</span></a>
+<a href="/nenshu-kabe-simulator/" class="block bg-slate-50 border border-slate-200 rounded-xl p-4 font-bold text-slate-800 hover:bg-slate-100">年収の壁 手取りシミュレーター<span class="block font-normal text-xs text-slate-500 mt-1">パートの手取りと、損する年収帯がわかります</span></a>
+<a href="/loan-sim/" class="block bg-slate-50 border border-slate-200 rounded-xl p-4 font-bold text-slate-800 hover:bg-slate-100">住宅ローン 固定vs変動<span class="block font-normal text-xs text-slate-500 mt-1">変動金利が何％まで上がると固定に負けるか</span></a>
+</div>
+</section>
+
 <!-- note記事へのリンク -->
 <div class="bg-white p-6 rounded-3xl border border-slate-100 max-w-3xl">
 <h2 class="text-base font-bold text-slate-800 mb-2">このツールについて</h2>
@@ -261,13 +354,15 @@ input[type=range]{accent-color:#0ea5e9}
 <p>年間投資枠（360万円）や生涯の非課税枠（1,800万円）を超えた分は、課税口座で運用した前提で計算します。</p>
 <h3 class="font-bold text-slate-800">新NISAの非課税枠は？</h3>
 <p>年間の投資枠は、つみたて投資枠が120万円、成長投資枠が240万円で、合計360万円（月30万円）です。生涯の非課税保有限度額は1,800万円です。</p>
+<h3 class="font-bold text-slate-800">子どもの分は計算できる？</h3>
+<p>2027年1月から、0〜17歳でもNISAのつみたて投資枠を使えるようになります（こどもNISA。年60万円・上限600万円）。子どもの分は、専用の<a href="kodomo/" class="text-sky-600 underline">こどもNISAシミュレーター</a>で計算できます。</p>
 <h3 class="font-bold text-slate-800">利回りは何％にすればいい？</h3>
 <p>将来の利回りは誰にも分かりません。1つの数字で決めず、悲観・標準・楽観の幅で見るのがおすすめです。</p>
 <h3 class="font-bold text-slate-800">取り崩しはどう計算している？</h3>
 <p>積立が終わった時点の資産（悲観・標準・楽観それぞれ）から、毎月取り崩していきます。残りは「取り崩し中の想定年利」で運用を続ける前提です。NISAの中のお金は、売却しても税金がかかりません。枠を超えて課税口座で運用した分がある場合は、先に課税口座から取り崩し、その運用益にかかる税金（20.315%）を引いて手取りを計算します。</p>
 <h3 class="font-bold text-slate-800">「毎月◯円」と「毎年◯%」はどちらがいい？</h3>
 <p>「毎月◯円」は生活費の見通しが立てやすい反面、相場が悪いとお金が早く減ります。「毎年◯%」は残高に合わせて受け取る額が変わるので、お金が尽きにくい反面、受け取る額が年によって増えたり減ったりします。両方を試して、自分に合う形を考えてみてください。</p>
-<p class="text-xs text-slate-400">本ツールは2026年10月時点の制度（年間投資枠360万円・生涯非課税保有限度額1,800万円・税率20.315%）をもとに、一定の利回りが続くと仮定した試算です。将来の運用成果を保証するものではありません。実際の相場は毎年上下するため、同じ平均利回りでも、取り崩し初期に下落が続くと、お金が早く尽きることがあります。手数料、インフレ、制度の変更、売却による非課税枠の再利用、年金などほかの収入は考慮していません。投資の判断はご自身でお願いします。本ページには広告（アフィリエイトリンク）を含みます。</p>
+<p class="text-xs text-slate-400">本ツールは2026年11月時点の制度（年間投資枠360万円・生涯非課税保有限度額1,800万円・税率20.315%）をもとに、一定の利回りが続くと仮定した試算です。将来の運用成果を保証するものではありません。実際の相場は毎年上下するため、同じ平均利回りでも、取り崩し初期に下落が続くと、お金が早く尽きることがあります。手数料、インフレ、制度の変更、売却による非課税枠の再利用、年金などほかの収入は考慮していません。投資の判断はご自身でお願いします。本ページには広告（アフィリエイトリンク）を含みます。</p>
 </section>
 
 </div>
@@ -526,6 +621,12 @@ window.addEventListener('DOMContentLoaded', () => {
     const text = `毎月${last.pmt.toLocaleString('ja-JP')}円を${last.years}年積み立てると、年利${last.rate}%で約${man(last.total)}。${w}\n#NISA #ちいさなツール工房\n※ページ内に広告あり`;
     window.open('https://x.com/intent/post?text='+encodeURIComponent(text)+'&url='+encodeURIComponent(shareUrl()), '_blank');
   });
+  const plain = () => `NISAで毎月${last.pmt.toLocaleString('ja-JP')}円を${last.years}年積み立てると、年利${last.rate}%で約${man(last.total)}になる試算`;
+  $('btnLine').addEventListener('click', () => window.open('https://social-plugins.line.me/lineit/share?url='+encodeURIComponent(shareUrl())+'&text='+encodeURIComponent(plain()), '_blank'));
+  if (navigator.share) {
+    $('btnNative').classList.remove('hidden');
+    $('btnNative').addEventListener('click', () => navigator.share({title: document.title, text: plain(), url: shareUrl()}).catch(() => {}));
+  }
   $('btnCopy').addEventListener('click', async () => {
     try { await navigator.clipboard.writeText(shareUrl()); $('btnCopy').textContent = 'コピーしました'; }
     catch (e) { $('btnCopy').textContent = 'コピーできませんでした'; }
@@ -547,7 +648,7 @@ window.addEventListener('DOMContentLoaded', () => {
 <p><span class="font-bold text-slate-600">広告について：</span>このページには、楽天アフィリエイトなどの広告（PR）を含みます。リンクからお買い物があると、運営者に紹介料が入ることがあります。</p>
 <p><span class="font-bold text-slate-600">プライバシーポリシー：</span>アクセス状況を知るために、Googleアナリティクス（GA4）を使っています。GA4はCookieを使って、個人を特定しない形でアクセス情報を集めます。入力した金額や年齢は、ブラウザの中だけで計算し、こちらに送られることはありません（共有ボタンを押した場合は、その条件がリンクに含まれます）。データ収集を止めたい場合は、ブラウザのCookieを無効にするか、<a href="https://tools.google.com/dlpage/gaoptout?hl=ja" target="_blank" rel="noopener" class="underline">Googleアナリティクス オプトアウト アドオン</a>をご利用ください。</p>
 <p><span class="font-bold text-slate-600">免責事項：</span>計算結果は概算です。実際の運用成果や税金とは異なることがあります。制度の最新情報は、金融庁などの公式情報で確認してください。</p>
-<p>最終更新日：2026年10月22日</p>
+<p>最終更新日：2026年11月10日</p>
 </footer>
 
 </body>
