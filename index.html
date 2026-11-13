@@ -96,12 +96,33 @@
 body{font-family:'Noto Sans JP',sans-serif;background:#f8fafc}
 input[type=range]{accent-color:#0ea5e9}
 .mode-btn[aria-pressed=true]{background:#0ea5e9;color:#fff;border-color:#0ea5e9}
+.sb{background:#fff;border-bottom:1px solid #e2e8f0;margin:-1rem -1rem 1rem}
+@media(min-width:768px){.sb{margin:-2rem -2rem 1.5rem}}
+.sb div{max-width:72rem;margin:0 auto;padding:9px 16px;display:flex;justify-content:space-between;align-items:center}
+.sb a{display:flex;align-items:center;gap:8px;text-decoration:none;color:#0f172a;font-weight:700;font-size:14px}
+.sb svg{width:26px;height:26px;border-radius:6px}
+.sb span{font-size:11.5px;color:#0369a1;border:1px solid #0369a1;border-radius:99px;padding:1px 9px}
+.hero{background:#0369a1;color:#fff;border-radius:1.5rem;padding:20px 20px 18px}
+.hero .cap{font-size:13.5px;font-weight:700;opacity:.9}
+.hero .hv{font-size:36px;font-weight:800;line-height:1.25;white-space:nowrap}
+@media(max-width:360px){.hero .hv{font-size:30px}}
+.hero .hbar{display:flex;height:12px;border-radius:99px;overflow:hidden;margin:12px 0 6px;background:rgba(0,0,0,.15)}
+.hero .hbar i{display:block;height:100%}.hero .hbar .p{background:#fff;opacity:.55}.hero .hbar .g{background:#fff}
+.hero .hlg{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12.5px}
+.hero .hlg span:before{content:"";display:inline-block;width:9px;height:9px;border-radius:2px;background:#fff;margin-right:5px}
+.hero .hlg .p:before{opacity:.55}
+.fx{position:fixed;left:0;right:0;bottom:0;z-index:20;background:#0369a1;color:#fff;box-shadow:0 -2px 10px rgba(0,0,0,.15);transition:transform .2s}
+.fx.off{transform:translateY(110%)}
+.fx a{max-width:72rem;margin:0 auto;padding:10px 16px calc(10px + env(safe-area-inset-bottom));display:flex;justify-content:space-between;align-items:baseline;gap:10px;color:inherit;text-decoration:none}
+.fx small{font-size:12px;opacity:.9}.fx b{font-size:19px}.fx em{font-style:normal;font-size:12px;opacity:.9}
+body{padding-bottom:72px!important}
 </style>
 <!-- Google tag (GA4) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-40QSGNSQEL"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-40QSGNSQEL");</script>
 </head>
 <body class="text-slate-800 antialiased p-4 md:p-8">
+<header class="sb"><div><a href="https://zero-kobo.github.io/"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#ffc61a"/><g transform="rotate(45 32 32)" fill="#1c2830"><rect x="27.5" y="22" width="9" height="34" rx="4.5"/><circle cx="32" cy="17" r="11.5"/><rect x="28" y="2" width="8" height="14" rx="1.5" fill="#ffc61a"/></g></svg>ちいさなツール工房</a><span>無料・登録不要</span></div></header>
 <div class="max-w-6xl mx-auto space-y-6">
 
 <header class="text-center mb-6">
@@ -109,10 +130,6 @@ input[type=range]{accent-color:#0ea5e9}
 <p class="text-slate-500 mt-2">毎月の積立額を入力すると、悲観・標準・楽観の3パターンで将来の資産額を試算します。<br class="hidden sm:inline">積み立てた後に<a href="#withdraw" class="text-sky-600 underline">取り崩すと何年もつか</a>も分かります。</p>
 </header>
 
-<a href="kodomo/" class="block bg-amber-50 border border-amber-200 rounded-2xl p-4 text-amber-900 hover:bg-amber-100 max-w-3xl mx-auto">
-<span class="text-[10px] font-bold bg-rose-500 text-white rounded-full px-2 py-0.5 mr-1 align-middle">NEW</span><span class="font-bold align-middle">こどもNISAシミュレーターができました</span>
-<span class="block text-sm mt-1">2027年1月スタートの新制度。0歳から月1万円で、18歳にいくらになる？　試算する →</span>
-</a>
 
 <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
@@ -163,6 +180,13 @@ input[type=range]{accent-color:#0ea5e9}
 
 <!-- 結果 -->
 <div class="lg:col-span-8 space-y-6">
+
+<div class="hero scroll-mt-4" id="hero" aria-live="polite">
+<p class="cap" id="heroCap"></p>
+<p class="hv" id="heroBig"></p>
+<div class="hbar" role="img" aria-label="元本と運用益の割合"><i class="p" id="hbP"></i><i class="g" id="hbG"></i></div>
+<div class="hlg"><span class="p" id="hlP"></span><span class="g" id="hlG"></span></div>
+</div>
 
 <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
 <div class="bg-white p-4 rounded-2xl flex sm:block items-center justify-between border border-slate-100">
@@ -229,6 +253,11 @@ input[type=range]{accent-color:#0ea5e9}
 </div>
 
 <!-- 取り崩しシミュレーション -->
+<a href="kodomo/" class="block bg-amber-50 border border-amber-200 rounded-2xl p-4 text-amber-900 hover:bg-amber-100 max-w-3xl mx-auto">
+<span class="text-[10px] font-bold bg-rose-500 text-white rounded-full px-2 py-0.5 mr-1 align-middle">NEW</span><span class="font-bold align-middle">こどもNISAシミュレーターができました</span>
+<span class="block text-sm mt-1">2027年1月スタートの新制度。0歳から月1万円で、18歳にいくらになる？　試算する →</span>
+</a>
+
 <section id="withdraw" class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 scroll-mt-4">
 <div class="flex items-center gap-2 mb-1">
 <h2 class="text-lg md:text-xl font-bold text-slate-900">取り崩しシミュレーション</h2>
@@ -367,6 +396,7 @@ input[type=range]{accent-color:#0ea5e9}
 
 </div>
 
+<div class="fx off" id="fx"><a href="#hero"><small id="fxs"></small><b id="fxv"></b><em>くわしく ›</em></a></div>
 <script>
 const $ = id => document.getElementById(id);
 const yen = n => new Intl.NumberFormat('ja-JP',{style:'currency',currency:'JPY',maximumFractionDigits:0}).format(n);
@@ -487,6 +517,10 @@ const calc = () => {
   $('overNote').textContent = M.txP > 0 ? `NISA枠を超えた元本${man(M.txP)}は課税口座で運用した前提です。` : '';
 
   $('lo').textContent = yen(L.T[n]); $('mi').textContent = yen(total); $('hi').textContent = yen(H.T[n]);
+  $('heroCap').textContent = `${years}年後の資産額（標準・年${rate.toFixed(1)}%）`;
+  $('heroBig').textContent = yen(total); $('fxv').textContent = yen(total); $('fxs').textContent = `${years}年後（標準）`;
+  $('hbP').style.width = (total>0 ? Math.min(100, principal/total*100) : 0)+'%'; $('hbG').style.width = (total>0 ? allGain/total*100 : 0)+'%';
+  $('hlP').textContent = '元本 '+man(principal); $('hlG').textContent = '増えた分 +'+man(allGain);
   $('loRate').textContent = '年'+lo.toFixed(1)+'%'; $('miRate').textContent = '年'+rate.toFixed(1)+'%'; $('hiRate').textContent = '年'+hi.toFixed(1)+'%';
   $('nisaTotal').textContent = yen(nisaNet); $('taxTotal').textContent = yen(taxOnly); $('taxSaved').textContent = yen(saved);
 
@@ -634,6 +668,7 @@ window.addEventListener('DOMContentLoaded', () => {
   });
   calc();
 });
+if('IntersectionObserver' in window)new IntersectionObserver(e=>document.getElementById('fx').classList.toggle('off',e[0].isIntersecting),{threshold:.15}).observe(document.getElementById('hero'));
 </script>
 
 <!-- 広告エリア -->
